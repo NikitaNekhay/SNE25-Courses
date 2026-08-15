@@ -1,0 +1,164 @@
+HARDENINGS: System-Level Protections Against Hash Table Code Vulnerabilities
+============================================================================
+
+These hardening techniques prevent or mitigate the security risks exposed by the
+identified vulnerabilities in hash.c. Apply them to arbitrary C code on Ubuntu.
+
+---
+
+## 1. COMPILER FLAGS - Catch bugs at compile time
+
+GCC flags to enable warnings and runtime protections:
+
+	gcc -Wall -Wextra -Werror -std=c11 \
+	    -fstack-protector-strong \
+	    -D_FORTIFY_SOURCE=2 \
+	    -Wformat=2 -Wformat-security \
+	    -fPIE -pie \
+	    -Wstrict-prototypes \
+	    hash.c -o hash_program
+
+Explanation:
+	-Wall -Wextra			: Enable all common warnings
+	-Werror					: Treat warnings as errors (fail build)
+	-fstack-protector-strong	: Stack canary to detect buffer overflow
+	-D_FORTIFY_SOURCE=2			: Runtime checks on string functions (strcpy, sprintf, etc.)
+	-Wformat=2 -Wformat-security	: Warn on unsafe printf/sprintf format strings
+	-fPIE -pie				: Position-independent executable (ASLR compatible)
+	-Wstrict-prototypes		: Function prototypes must be explicit
+
+---
+
+## 2. STATIC ANALYSIS - Find vulnerabilities before runtime
+
+Install cppcheck (detects many CWE issues):
+
+	sudo apt install cppcheck
+
+Run static analysis:
+
+	cppcheck --enable=all --error-exitcode=1 hash.c hash.h
+
+Explanation:
+	This scans for:
+	- Buffer overflows (CWE-120, CWE-787)
+	- Use of unsafe functions (strcpy, sprintf, gets)
+	- Infinite loops (CWE-835)
+	- Uninitialized variables (CWE-908)
+	- Format string vulnerabilities (CWE-134)
+	- Out-of-bounds access (CWE-125)
+
+---
+
+## 3. DYNAMIC ANALYSIS WITH VALGRIND - Monitor runtime behavior
+
+Install valgrind:
+
+	sudo apt install valgrind
+
+Run memory checker:
+
+	valgrind --leak-check=full --track-origins=yes \
+	         --show-leak-kinds=all --verbose \
+	         ./hash_program
+
+Explanation:
+	- Detects memory leaks (missed free() calls)
+	- Reports use-after-free errors (CWE-416)
+	- Tracks invalid reads/writes and their origin
+	- Shows uninitialized memory reads (CWE-908)
+
+---
+
+## 4. ADDRESS SANITIZER - Catch memory errors at runtime
+
+Compile with AddressSanitizer (ASAN):
+
+	gcc -Wall -Wextra -std=c11 \
+	    -fsanitize=address -fsanitize=undefined \
+	    -g -O1 \
+	    hash.c -o hash_program_asan
+
+Run the instrumented binary:
+
+	./hash_program_asan
+
+Explanation:
+	- ASAN detects: buffer overflow, OOB access, use-after-free, memory leak
+	- UndefinedBehaviorSanitizer catches: integer overflow, division by zero, shift errors
+	- Stops immediately when error detected, shows stack trace
+	- Overhead: ~2x runtime, ~5x memory
+
+---
+
+## 5. STRING SAFETY - Replace unsafe functions
+
+Replace all unsafe string operations with bounds-checked versions:
+
+Avoid:							Replace with:
+	strcpy(dst, src)		→	strncpy(dst, src, size); dst[size-1] = '\0';
+	sprintf(buf, fmt, ...)	→	snprintf(buf, size, fmt, ...);
+	strcat(dst, src)		→	strncat(dst, src, size);
+	gets(buf)				→	fgets(buf, size, stdin);
+	printf(user_input)		→	printf("%s", user_input);
+
+For hash.c specifically, change lines 37, 48, 60:
+
+	OLD: if (strcpy(val->KeyName, key)) { ... }
+	NEW: if (strncmp(val->KeyName, key, KEY_STRING_MAX) == 0) { ... }
+
+	OLD: printf(val->KeyName);
+	NEW: printf("%s", val->KeyName);
+
+---
+
+## 6. INITIALIZATION - Use calloc(), not malloc()
+
+When allocating structures with pointer arrays:
+
+	OLD: HashMap* map = malloc(sizeof(HashMap));
+	NEW: HashMap* map = calloc(1, sizeof(HashMap));
+
+calloc() zeros memory (all pointers become NULL), preventing CWE-908 uninitialized reads.
+
+---
+
+## 7. LOOP CONTROL - Verify loop termination
+
+For string loops, always check dereferenced character, not pointer:
+
+	OLD: for (char* c = key; c; c++)      // WRONG: 'c' never NULL
+	NEW: for (const char* c = key; *c; c++)   // RIGHT: check *c
+
+Or use explicit bounds:
+
+	for (size_t i = 0; i < MAX_LEN && key[i]; i++) { ... }
+
+---
+
+## 8. BOUNDS ENFORCEMENT - Modulo operations
+
+Always apply bounds-checking to array indices:
+
+	OLD: unsigned idx = HashIndex(key);		// Can be 0 to 2^32-1
+	NEW: unsigned idx = HashIndex(key) % MAP_MAX;	// Guaranteed 0 to 127
+
+Or do it inside HashIndex():
+
+	return sum % MAP_MAX;  // Called once, bounds guaranteed
+
+---
+
+## SUMMARY
+
+Combined, these hardening techniques address all 7 vulnerabilities:
+
+1. Infinite loop (CWE-835)		→ Fix 1: Correct loop condition
+2. OOB write via bad index		→ Fix 8: Modulo operation
+3. Uninitialized memory			→ Fix 6: Use calloc()
+4. Broken collision chain		→ Code fix (hash_fixed.c)
+5. Buffer overflow + wrong logic	→ Fix 5: Replace strcpy → strncmp/strncpy
+6. Format string attack			→ Fix 5: Replace printf(var) → printf("%s", var)
+7. Use-after-free				→ Fix 5: Add break; in delete loop
+
+Compile with flags in #1 + run tools in #2-4 before shipping production code.

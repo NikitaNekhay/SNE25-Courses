@@ -1,0 +1,18 @@
+
+dc3dd 7.2.646 started at 2026-05-02 19:45:58 +0300
+compiled options:
+command line dc3dd wipe=/dev/sde tpat=0x00 log=wipe_log.txt hash=md5 hash=sha256 verb=on
+device size: 122880000 sectors (probed),   62,914,560,000 bytes
+sector size: 512 bytes (probed)
+ 62914560000 bytes ( 59 G ) copied ( 100% ), 1430.97 s, 42 M/s
+
+input results for pattern `0x00':
+   122880000 sectors in
+   db724484a9ca4ee64ba4766fd032987f (md5)
+   302863e3dd9b310cd1f9d72bea00ade0220f6f749f82825da708971e92bd2111 (sha256)
+
+output results for device `/dev/sde':
+   122880000 sectors out
+
+dc3dd completed at 2026-05-02 20:09:12 +0300
+

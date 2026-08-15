@@ -1,0 +1,4 @@
+git clone https://github.com/cado-security/DFIR_Resources_Whispergate
+cd DFIR_Resources_Whispergate/Samples
+unzip -P "infected" a196c6b8ffcb97ffb276d04f354696e2391311db3841ae16c8c9f56f36a38e92.zip
+mv a196c6b8ffcb97ffb276d04f354696e2391311db3841ae16c8c9f56f36a38e92 /tmp/yara/malware/sus

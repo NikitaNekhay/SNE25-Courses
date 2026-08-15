@@ -1,0 +1,6 @@
+# environment variables:
+AFL_CUSTOM_INFO_PROGRAM=./network_test
+AFL_CUSTOM_INFO_PROGRAM_ARGV=@@
+AFL_CUSTOM_INFO_OUT=output_network/default
+# command line:
+'afl-fuzz' '-i' 'input' '-o' 'output_network' './network_test' '@@'

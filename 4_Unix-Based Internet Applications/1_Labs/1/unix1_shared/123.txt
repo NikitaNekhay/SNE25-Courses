@@ -1,0 +1,22 @@
+# Fix CVE-2020-25684
+dhcp-name-match=set:ignore,ignore-name,wpad
+
+interface=enp0s8
+bind-interfaces
+domain=pxemaster.local
+
+dhcp-range=enp0s8,192.168.1.10,192.168.1.192,255.255.255.0,1h
+dhcp-option=option:router,192.168.1.1
+dhcp-option=option:dns-server,192.168.1.1
+dhcp-option=option:ntp-server,192.168.1.1
+dhcp-match=set:efi64,option:client-arch,9
+dhcp-match=set:efi64,option:client-arch,7
+dhcp-boot=tag:efi64,efi64/EFI/BOOT/grubx64.efi
+# For BIOS understanding
+dhcp-boot=pxelinux.0,pxeserver,192.168.1.1
+
+enable-tftp
+tftp-root=/srv/tftp
+
+pxe-service=X86PC, "PXELINUX (BIOS)", pxelinux
+pxe-service=x86-64_EFI, "UEFI GRUB", efi64/EFI/BOOT/grubx64.efi

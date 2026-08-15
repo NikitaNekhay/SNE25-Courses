@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="Financial%20Ratios%20Task%20%C2%B7%20Lectures%205-6_files/css2_geGu.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Financial Ratios Task · Lectures 5-6</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #0b1622;
+      --navy: #192e40;
+      --navy-2: #20303d;
+      --orange: #ed561b;
+      --orange-strong: #c8430f;
+      --coral: #f2785c;
+      --text: #182230;
+      --muted: #6b7785;
+      --muted-dark: #9fb0bf;
+      --line: #e7eaee;
+      --panel: #ffffff;
+      --bg: #f2f4f7;
+      --soft: #fff4ec;
+      --shadow: 0 16px 42px rgba(11, 22, 34, 0.10);
+      --ring: 0 0 0 3px rgba(237, 86, 27, 0.22);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Montserrat, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1100px 480px at 85% -8%, rgba(237, 86, 27, 0.06), transparent 60%),
+        var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(820px 360px at 92% -40%, rgba(237, 86, 27, 0.20), transparent 62%),
+        linear-gradient(180deg, var(--navy-2), var(--navy));
+      color: #fff;
+      padding: 30px 18px 40px;
+    }
+
+    .wrap {
+      width: min(900px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header .wrap {
+      position: relative;
+      z-index: 2;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 18px;
+      color: var(--muted-dark);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: color 140ms ease;
+    }
+
+    .back:hover,
+    .back:focus-visible {
+      color: #fff;
+      outline: none;
+    }
+
+    .tab {
+      display: block;
+      width: 46px;
+      height: 7px;
+      border-radius: 2px;
+      background: var(--orange);
+      margin-bottom: 16px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--coral);
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 4.6vw, 50px);
+      line-height: 1.04;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 16px 0 0;
+      color: #d6dee8;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .ghost {
+      position: absolute;
+      right: 2%;
+      top: 50%;
+      transform: translateY(-46%);
+      z-index: 1;
+      margin: 0;
+      font-size: clamp(120px, 22vw, 260px);
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.05);
+      letter-spacing: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    main { padding: 28px 0 56px; }
+
+    .page-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .task-card,
+    .submit-card {
+      display: grid;
+      gap: 22px;
+      padding: 24px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .task-meta {
+      display: grid;
+      gap: 8px;
+      padding: 18px;
+      background: var(--soft);
+      border: 1px solid rgba(237, 86, 27, 0.20);
+      border-radius: 12px;
+    }
+
+    .label {
+      color: var(--orange-strong);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .ratio-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .ratio-list li {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      min-height: 48px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink);
+      background: #fbfcfd;
+      font-size: 14.5px;
+      font-weight: 800;
+    }
+
+    .ratio-list span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      color: #fff;
+      background: var(--navy);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .button,
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 10px;
+      border: 1px solid var(--orange);
+      color: #fff;
+      background: var(--orange);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    .button:hover,
+    .button:focus-visible,
+    button:hover,
+    button:focus-visible {
+      background: var(--orange-strong);
+      border-color: var(--orange-strong);
+      box-shadow: var(--ring);
+      outline: none;
+    }
+
+    .secondary,
+    button.secondary {
+      color: var(--navy);
+      background: #fff;
+      border-color: var(--line);
+    }
+
+    .secondary:hover,
+    .secondary:focus-visible,
+    button.secondary:hover,
+    button.secondary:focus-visible {
+      color: var(--orange-strong);
+      background: #fff;
+      border-color: rgba(237, 86, 27, 0.45);
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.72;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: 14px;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    input {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0 13px;
+      color: var(--text);
+      background: #fff;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    input:focus {
+      border-color: rgba(237, 86, 27, 0.65);
+      box-shadow: var(--ring);
+    }
+
+    .submit-status {
+      color: var(--orange-strong);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .counter {
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: var(--navy);
+      background: #eef2f6;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .result-box {
+      display: none;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(237, 86, 27, 0.20);
+      background: var(--soft);
+    }
+
+    .result-box.active {
+      display: block;
+    }
+
+    @media (max-width: 640px) {
+      header { padding-bottom: 34px; }
+      .ghost { display: none; }
+      .task-card, .submit-card { padding: 20px; }
+      .ratio-list, .field-grid { grid-template-columns: 1fr; }
+      .button, button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="back" href="https://max-ppv.ru/index5-6.html">← Back to Lectures 5-6</a>
+      <span class="tab" aria-hidden="true"></span>
+      <p class="eyebrow">Innopolis University · Summer 2026</p>
+      <h1>Financial Ratios Task</h1>
+      <p class="lead">Use the downloaded rental statements workbook, 
+calculate the required ratios in Google Sheets, and submit the shared 
+spreadsheet link.</p>
+    </div>
+    <p class="ghost" aria-hidden="true">RATIOS</p>
+  </header>
+
+  <main class="wrap page-stack">
+    <section class="task-card" aria-labelledby="task-title">
+      <div class="task-meta">
+        <span class="label">Practical task</span>
+        <h2 id="task-title">Calculate the financial ratios</h2>
+        <p>Create a Google Spreadsheet based on the model from the 
+previous file. Add formulas, show your calculations, and make sure the 
+link is shared so the instructor can open it.</p>
+      </div>
+
+      <ul class="ratio-list" aria-label="Ratios to calculate">
+        <li><span>1</span><div>P/E</div></li>
+        <li><span>2</span><div>ROA</div></li>
+        <li><span>3</span><div>ROE</div></li>
+        <li><span>4</span><div>Net Profit Margin</div></li>
+        <li><span>5</span><div>Gross Margin</div></li>
+        <li><span>6</span><div>EBITDA</div></li>
+        <li><span>7</span><div>EBITDA Margin</div></li>
+        <li><span>8</span><div>Net Debt / EBITDA</div></li>
+        <li><span>9</span><div>EV / EBITDA</div></li>
+        <li><span>10</span><div>Cash Conversion</div></li>
+      </ul>
+
+      <div class="actions">
+        <a class="button" href="https://max-ppv.ru/lectures5-6/rental-statements.xlsx" download="">Download XLSX</a>
+        <a class="button secondary" href="https://max-ppv.ru/index5-6.html">Back to materials</a>
+      </div>
+    </section>
+
+    <section class="submit-card" aria-labelledby="submit-title">
+      <div>
+        <span class="label">Submit answer</span>
+        <h2 id="submit-title">Send your Google Spreadsheet link</h2>
+        <p>Submit only the Google Spreadsheet link with your financial ratios calculations.</p>
+      </div>
+
+      <form id="ratiosForm">
+        <div class="field-grid">
+          <label class="field">Alias
+            <input name="alias" type="text" autocomplete="nickname" required="" placeholder="@telegram or nickname">
+          </label>
+
+          <label class="field">Google Spreadsheet link
+            <input name="sheet_link" type="url" inputmode="url" required="" placeholder="https://docs.google.com/spreadsheets/d/...">
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="submitButton">Send answer</button>
+          <button class="secondary" type="reset">Clear</button>
+          <span class="submit-status" id="submitStatus" aria-live="polite"></span>
+        </div>
+
+        <div class="counter" id="counter">Spreadsheet link: not submitted</div>
+      </form>
+
+      <section class="result-box" id="resultBox" aria-live="polite">
+        <p id="resultMessage">Spreadsheet link sent. Thank you!</p>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycbwKgUSOet9lljk9vBWwtmxGU3TF9MqchGujj0c9qwWLGKpLQPOyPC94euapQ2MQm0LfRw/exec";
+    const form = document.querySelector("#ratiosForm");
+    const counter = document.querySelector("#counter");
+    const resultBox = document.querySelector("#resultBox");
+    const resultMessage = document.querySelector("#resultMessage");
+    const submitButton = document.querySelector("#submitButton");
+    const submitStatus = document.querySelector("#submitStatus");
+    const ratios = ["P/E", "ROA", "ROE", "Net Profit Margin", "Gross Margin", "EBITDA", "EBITDA Margin", "Net Debt / EBITDA", "EV / EBITDA", "Cash Conversion"];
+
+    function collectData() {
+      const fd = new FormData(form);
+      return {
+        sheet: "ratios",
+        target_sheet: "ratios",
+        submitted_at: new Date().toISOString(),
+        alias: String(fd.get("alias") || "").trim(),
+        sheet_link: String(fd.get("sheet_link") || "").trim(),
+        assignment: "Lectures 5-6 Financial Ratios",
+        ratios
+      };
+    }
+
+    function endpointPayload(data) {
+      return {
+        sheet: "ratios",
+        target_sheet: "ratios",
+        submitted_at: data.submitted_at,
+        telegram: data.alias,
+        comment: `Lectures 5-6 financial ratios Google Spreadsheet: ${data.sheet_link}`,
+        topics: [{
+          id: 1,
+          block: "Financial Ratios",
+          title: `Google Spreadsheet link: ${data.sheet_link}`,
+          known: false,
+          interesting: Boolean(data.sheet_link)
+        }]
+      };
+    }
+
+    function updateCounter() {
+      counter.textContent = collectData().sheet_link
+        ? "Spreadsheet link: ready to submit"
+        : "Spreadsheet link: not submitted";
+    }
+
+    async function submitData(data) {
+      const body = new URLSearchParams();
+      body.set("payload", JSON.stringify(endpointPayload(data)));
+      await fetch(SUBMIT_ENDPOINT, { method: "POST", mode: "no-cors", body });
+      return { saved: true };
+    }
+
+    form.addEventListener("input", updateCounter);
+
+    form.addEventListener("reset", () => {
+      window.setTimeout(updateCounter, 0);
+      submitStatus.textContent = "";
+      resultBox.classList.remove("active");
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const data = collectData();
+      submitButton.disabled = true;
+      submitStatus.textContent = "Sending...";
+
+      try {
+        await submitData(data);
+        resultMessage.textContent = "Spreadsheet link sent. Thank you!";
+        submitStatus.textContent = "Sent";
+      } catch (error) {
+        resultMessage.textContent = "Could not send. Please check the link and try again.";
+        submitStatus.textContent = "Could not send";
+      } finally {
+        submitButton.disabled = false;
+        resultBox.classList.add("active");
+        updateCounter();
+      }
+    });
+
+    updateCounter();
+  </script>
+
+
+<div style="all: initial; position: fixed !important; display: block !important; z-index: 2147483647 !important"></div></body></html>

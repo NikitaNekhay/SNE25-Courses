@@ -1,0 +1,26 @@
+00_template/
+
+# ignore all literature files in any directory
+0_Literature/
+0_1_Lectures/
+4_1_Materials_for_presentation/
+5_Exam/
+
+*.mp4
+*.zip
+*.ova
+*.pdf
+*.7z
+*.gz
+*.pptx
+f95f4d1548329333169c540e234edd0f6e5305
+*.qcow2
+add66146428ae1076436bf7ca279d92bda5f26
+*.image
+574d474b3d1e61d0940a1f17d8b82d8aee8476
+ab6224290bd2370402d2ff0688ba395931e364
+*.sst
+
+
+.claude/
+.instructions/

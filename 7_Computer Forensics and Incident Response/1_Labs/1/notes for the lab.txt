@@ -1,0 +1,6 @@
+-- using a vm to run caine (may be probably challenging) , TA advised we run it live probably from a bootable Flash drive
+- use dd to overwrite the external flash drive with 0000000s or c
+— use Log to timeline rather than Autopsy 
+— Team work, exchange evidences with each other to see if your hash is correct and document it 
+- Browser history, cookies , emails, downloaded files (general files to look out for)
+- Note the version of every tool used in the lab and document it, the exact tool and version

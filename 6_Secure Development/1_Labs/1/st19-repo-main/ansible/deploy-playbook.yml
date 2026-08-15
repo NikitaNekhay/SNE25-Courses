@@ -1,0 +1,53 @@
+
+---
+- name: Deploy SPA Application to VM3
+  hosts: deployment_servers
+  gather_facts: no
+  vars:
+    docker_image_name: "{{ lookup('env', 'DOCKER_IMAGE_NAME') }}"
+    container_name: st19-spa
+    container_port: 8080
+    
+  tasks:
+    - name: Check if Docker is installed
+      command: docker --version
+      register: docker_check
+      
+    - name: Display Docker version
+      debug:
+        msg: "Docker is installed: {{ docker_check.stdout }}"
+    
+    - name: Stop existing container if running
+      docker_container:
+        name: "{{ container_name }}"
+        state: absent
+      ignore_errors: yes
+      
+    - name: Pull latest Docker image
+      docker_image:
+        name: "{{ docker_image_name }}:latest"
+        source: pull
+        
+    - name: Run new container
+      docker_container:
+        name: "{{ container_name }}"
+        image: "{{ docker_image_name }}:latest"
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "{{ container_port }}:80"
+          
+    - name: Wait for container to be healthy
+      wait_for:
+        port: "{{ container_port }}"
+        delay: 2
+        timeout: 30
+        
+    - name: Verify container is running
+      docker_container_info:
+        name: "{{ container_name }}"
+      register: container_info
+      
+    - name: Display deployment status
+      debug:
+        msg: "Container {{ container_name }} is running on port {{ container_port }}"

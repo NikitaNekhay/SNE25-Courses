@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Pulse – 2026</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <!-- Optional: modern font (loads fast from system or Google) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Daily Pulse</h1>
+        <p class="tagline">Real-time rates • Weather • DW RUSSIA News • 2026</p>
+    </header>
+
+    <main>
+        <section id="currency" class="card">
+            <h2><span class="icon">💱</span> Exchange Rates (RUB)</h2>
+            <p id="currency-data">Loading...</p>
+        </section>
+
+        <section id="weather" class="card">
+            <h2><span class="icon">☁️</span> Weather Now</h2>
+            <p id="weather-data">Loading...</p>
+        </section>
+
+        <section id="news" class="card">
+            <h2><span class="icon">📰</span> DW RUSSIA Latest</h2>
+            <ul id="news-list"></ul>
+        </section>
+
+        <section id="about" class="card">
+            <h2><span class="icon">ℹ️</span> About This App</h2>
+            <p>This simple Progressive Web App fetches live data: Central Bank of Russia currency rates, weather by IP (fallback to Moscow), and latest English news from DW RUSSIA agency. Includes an interactive particle dots canvas. Installable for offline use (static files cached via service worker). Built with plain HTML, CSS & JS — modern, lightweight, and Russia-friendly.</p>
+        </section>
+
+        <section id="animation" class="card interactive">
+            <h2><span class="icon">✨</span> Interactive Dots</h2>
+            <p>Tap or click in this area to launch colorful particle explosion!</p>
+            <canvas id="dots-canvas"></canvas>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

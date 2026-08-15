@@ -1,0 +1,148 @@
+stages:
+  - build
+  - test
+  - sast
+  - docker-build
+  - docker-push
+  - llm-review
+  - deploy
+
+variables:
+  DOCKER_IMAGE_NAME: "nikitanekhay/st19-spa"
+  DOCKER_IMAGE_TAG: "${CI_COMMIT_SHORT_SHA}"
+# CI Stage 1: Build the application
+build-app:
+  stage: build
+  tags:
+    - st19-runner
+  script:
+    - echo "Building the application..."
+    - ls -la
+    - echo "Build completed successfully"
+  artifacts:
+    paths:
+      - .  # Save all files for next stages
+    expire_in: 1 hour
+
+# CI Stage 2: Run tests
+test-app:
+  stage: test
+  tags:
+    - st19-runner
+  dependencies:
+    - build-app
+  script:
+    - echo "Running application tests..."
+    - test -f index.html && echo "index.html exists - OK"
+    - echo "All tests passed!"
+
+# CI Stage 3: SAST with Semgrep
+sast:
+  stage: sast
+  tags:
+    - st19-runner
+  dependencies:
+    - build-app
+  script:
+    - echo "Running SAST with Semgrep..."
+    - python3 -m venv /tmp/sast-venv
+    - /tmp/sast-venv/bin/pip install semgrep --quiet
+    - /tmp/sast-venv/bin/semgrep scan --config=auto --json -o semgrep-report.json . || true
+    - echo "SAST scan completed"
+  artifacts:
+    paths:
+      - semgrep-report.json
+    expire_in: 1 week
+    when: always
+  allow_failure: true
+
+# CI Stage 4: Build Docker image
+build-docker:
+  stage: docker-build
+  tags:
+    - st19-runner
+  dependencies:
+    - build-app
+  script:
+    - echo "Building Docker image..."
+    - docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
+    - docker build -t ${DOCKER_IMAGE_NAME}:latest .
+    - echo "Docker image built successfully"
+    - docker images | grep st19-spa
+
+# CI Stage 5: Push to Docker Hub
+push-docker:
+  stage: docker-push
+  tags:
+    - st19-runner
+  dependencies:
+    - build-docker
+  script:
+    - echo "Logging into Docker Hub..."
+    - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+    - echo "Pushing Docker image to Docker Hub..."
+    - docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+    - docker push ${DOCKER_IMAGE_NAME}:latest
+    - echo "Docker image pushed successfully"
+    - docker logout
+
+# CI Stage 6a: LLM Code Review
+llm-review:
+  stage: llm-review
+  tags:
+    - st19-runner
+  dependencies:
+    - build-app
+  script:
+    - echo "Running LLM code review..."
+    - python3 -m venv /tmp/llm-venv
+    - /tmp/llm-venv/bin/pip install requests --quiet
+    - /tmp/llm-venv/bin/python3 scripts/llm_review.py
+    - echo "LLM review completed"
+  artifacts:
+    paths:
+      - llm-review-report.md
+    expire_in: 1 week
+    when: always
+  allow_failure: true
+
+# CI Stage 6b: LLM Security Review (parallel with llm-review)
+llm-security:
+  stage: llm-review
+  tags:
+    - st19-runner
+  dependencies:
+    - build-app
+  script:
+    - echo "Running LLM security review..."
+    - python3 -m venv /tmp/llm-s-venv
+    - /tmp/llm-s-venv/bin/pip install requests --quiet
+    - /tmp/llm-venv/bin/python3 scripts/llm_security_review.py
+    - echo "LLM security review completed"
+  artifacts:
+    paths:
+      - llm-security-report.md
+    expire_in: 1 week
+    when: always
+  allow_failure: true
+
+# CD Stage: Deploy to Kubernetes
+deploy-k8s:
+  stage: deploy
+  tags:
+    - st19-runner
+  dependencies: []
+  script:
+    - echo "Deploying to Kubernetes..."
+    - curl -LO "https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    - chmod +x kubectl
+    - mkdir -p $HOME/bin/
+    - mv kubectl $HOME/bin/
+    - export PATH="$HOME/bin:$PATH"
+    - mkdir -p ~/.kube
+    - echo "$KUBECONFIG_B64" | base64 -d > ~/.kube/config
+    - kubectl apply -f k8s/
+    - kubectl rollout status deployment/simple-pwa --timeout=120s
+    - echo "Kubernetes deployment completed successfully!" 
+  only:
+    - main

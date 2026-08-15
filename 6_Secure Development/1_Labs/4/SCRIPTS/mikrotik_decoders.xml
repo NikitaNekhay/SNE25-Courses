@@ -1,0 +1,21 @@
+<decoder name="mikrotik">
+  <prematch>^RouterOS7.1-logs: </prematch>
+</decoder>
+
+<decoder name="mikrotik1">
+  <parent>mikrotik</parent>
+  <regex type="pcre2">\S+ (\w+ \d+ \d+:\d+:\d+) MikroTik user (\S+) (.*?) from (\d+.\d+.\d+.\d+) via (\w+)</regex>
+  <order>logtimestamp, logged_user, action, ip_address, protocol</order>
+</decoder>
+
+<decoder name="mikrotik1">
+  <parent>mikrotik</parent>
+  <regex type="pcre2">\S+ (\w+ \d+ \d+:\d+:\d+) MikroTik dhcp-client on (\S+) (.*?) address (\d+.\d+.\d+.\d+)</regex>
+  <order>logtimestamp, interface, action, ip_address</order>
+</decoder>
+
+<decoder name="mikrotik1">
+  <parent>mikrotik</parent>
+  <regex type="pcre2">\S+ (\w+ \d+ \d+:\d+:\d+) MikroTik router (\S+)</regex>
+  <order>logtimestamp, action</order>
+</decoder>

@@ -1,0 +1,321 @@
+stages:
+  - security-scan
+  - sast
+  - sca
+  - build
+  - test
+  - docker-build
+  - image-scan
+  - docker-push
+  - deploy
+  - security-report
+
+variables:
+  DOCKER_IMAGE_NAME: "nikitanekhay/st19-spa"
+  DOCKER_IMAGE_TAG: "${CI_COMMIT_SHORT_SHA}"
+  ANSIBLE_FORCE_COLOR: "true"
+
+# Cache configuration - reuse dependencies across jobs
+cache:
+  key: "${CI_COMMIT_REF_SLUG}"
+  paths:
+    - node_modules/
+    - .npm/
+  policy: pull-push
+
+# Security Stage: Secrets scanning with Gitleaks
+secrets-scan:
+  stage: security-scan
+  tags:
+    - st19-runner
+  script:
+    - echo "Running Gitleaks secrets scan..."
+    - |
+      docker run --rm -v "$CI_PROJECT_DIR:/repo" zricethezav/gitleaks:latest \
+        detect --source=/repo --no-git --report-format=json --report-path=/repo/gitleaks-report.json
+      SCAN_EXIT=$?
+      if [ -f gitleaks-report.json ]; then cat gitleaks-report.json; fi
+      if [ $SCAN_EXIT -ne 0 ]; then
+        echo "SECRETS DETECTED — pipeline blocked!"
+        exit 1
+      else
+        echo "No secrets found!"
+      fi
+  artifacts:
+    paths:
+      - gitleaks-report.json
+    when: always
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# SAST Stage: Static analysis with Semgrep
+sast-semgrep:
+  stage: sast
+  tags:
+    - st19-runner
+  script:
+    - echo "Running Semgrep SAST scan..."
+    - docker run --rm -v "$CI_PROJECT_DIR:/src" semgrep/semgrep:latest semgrep scan --config=auto --json --output=/src/semgrep-report.json /src || true
+    - echo "=== Semgrep Results Summary ==="
+    - python3 ci-scripts/sast-check.py semgrep-report.json
+  artifacts:
+    paths:
+      - semgrep-report.json
+    when: always
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# SCA Stage: Dependency scanning with Trivy
+sca-trivy:
+  stage: sca
+  tags:
+    - st19-runner
+  script:
+    - echo "Running Trivy dependency scan..."
+    - docker run --rm -v "$CI_PROJECT_DIR:/project" -v trivy-cache:/root/.cache/trivy aquasec/trivy:latest fs --format json --output /project/trivy-sca-report.json --scanners vuln /project || true
+    - echo "=== SCA Results ==="
+    - python3 ci-scripts/sca-check.py trivy-sca-report.json
+  artifacts:
+    paths:
+      - trivy-sca-report.json
+    when: always
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# CI Stage 1: Build the application
+build-app:
+  stage: build
+  tags:
+    - st19-runner
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}"
+    paths:
+      - node_modules/
+      - .npm/
+    policy: pull-push
+  before_script:
+    - echo "Starting build on branch ${CI_COMMIT_REF_NAME}"
+  script:
+    - echo "Building the application..."
+    - ls -la
+    - echo "Build completed successfully"
+  artifacts:
+    name: "build-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - .
+      - Dockerfile
+    expire_in: 1 hour
+    when: on_success
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# CI Stage 2: Run tests
+test-app:
+  stage: test
+  tags:
+    - st19-runner
+  needs:
+    - job: build-app
+      artifacts: true
+  dependencies:
+    - build-app
+  script:
+    - echo "Running application tests on branch ${CI_COMMIT_REF_NAME}..."
+    - test -f index.html && echo "✓ index.html exists"
+    - test -f Dockerfile && echo "✓ Dockerfile exists"
+    - echo "All tests passed!"
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# CI Stage 3: Build Docker image
+build-docker:
+  stage: docker-build
+  tags:
+    - st19-runner
+  needs:
+    - job: test-app
+    - job: build-app
+      artifacts: true
+  dependencies:
+    - build-app
+  script:
+    - echo "Building Docker image for branch ${CI_COMMIT_REF_NAME}..."
+    - |
+      if [ "$CI_COMMIT_REF_NAME" = "main" ]; then
+        docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
+        docker build -t ${DOCKER_IMAGE_NAME}:latest .
+        docker build -t ${DOCKER_IMAGE_NAME}:production .
+      elif [ "$CI_COMMIT_REF_NAME" = "develop" ]; then
+        docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
+        docker build -t ${DOCKER_IMAGE_NAME}:develop .
+      else
+        docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
+      fi
+    - docker images | grep st19-spa
+  only:
+    - main
+    - develop
+
+# Image Security: Scan container image with Trivy
+image-scan:
+  stage: image-scan
+  tags:
+    - st19-runner
+  needs:
+    - job: build-docker
+  script:
+    - echo "Scanning container image for vulnerabilities..."
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$CI_PROJECT_DIR:/project" -v trivy-cache:/root/.cache/trivy aquasec/trivy:latest image --format json --output /project/trivy-image-report.json ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} || true
+    - echo "=== Image Scan Results ==="
+    - python3 ci-scripts/image-check.py trivy-image-report.json
+  artifacts:
+    paths:
+      - trivy-image-report.json
+    when: always
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+
+# CI Stage 4: Push to Docker Hub
+push-docker:
+  stage: docker-push
+  tags:
+    - st19-runner
+  needs:
+    - job: build-docker
+  dependencies: []
+  script:
+    - echo "Logging into Docker Hub..."
+    - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+    - echo "Pushing Docker image for branch ${CI_COMMIT_REF_NAME}..."
+    - |
+      if [ "$CI_COMMIT_REF_NAME" = "main" ]; then
+        docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+        docker push ${DOCKER_IMAGE_NAME}:latest
+        docker push ${DOCKER_IMAGE_NAME}:production
+        echo "Pushed production tags"
+      elif [ "$CI_COMMIT_REF_NAME" = "develop" ]; then
+        docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+        docker push ${DOCKER_IMAGE_NAME}:develop
+        echo "Pushed develop tag"
+      fi
+    - docker logout
+  only:
+    - main
+    - develop
+
+# CD Stage: Deploy to Production using Ansible (main branch only)
+deploy-production:
+  stage: deploy
+  tags:
+    - st19-runner
+  needs:
+    - job: push-docker
+  dependencies: []
+  environment:
+    name: production
+    url: http://deploy.st19.sne.com:8080
+  before_script:
+    - echo "Preparing Ansible deployment to production..."
+  script:
+    - echo "Deploying to production using Ansible..."
+    - cd ansible
+    - ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.ini deploy-playbook.yml -e "docker_image_name=${DOCKER_IMAGE_NAME}" -v
+    - echo "Production deployment completed!"
+    - echo "Application available at http://deploy.st19.sne.com:8080"
+  after_script:
+    - ssh deploy-server "docker ps | grep st19-spa"
+  only:
+    - main
+  when: manual
+
+# CD Stage: Deploy to Staging using Ansible (develop branch)
+deploy-staging:
+  stage: deploy
+  tags:
+    - st19-runner
+  needs:
+    - job: push-docker
+  dependencies: []
+  environment:
+    name: staging
+    url: http://deploy.st19.sne.com:8081
+  script:
+    - echo "Deploying to staging using Ansible..."
+    - cd ansible
+    - |
+      ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
+        -i inventory.ini \
+        deploy-playbook.yml \
+        -e "docker_image_name=${DOCKER_IMAGE_NAME}" \
+        -e "container_name=st19-spa-staging" \
+        -e "container_port=8081" \
+        -v
+    - echo "Staging deployment completed!"
+    - echo "Application available at http://deploy.st19.sne.com:8081"
+  only:
+    - develop
+  when: on_success
+
+# Optional: Rollback job (manual trigger)
+rollback-production:
+  stage: deploy
+  tags:
+    - st19-runner
+  script:
+    - echo "Rolling back production deployment..."
+    - ssh deploy-server "docker stop st19-spa && docker rm st19-spa"
+    - ssh deploy-server "docker run -d --name st19-spa -p 8080:80 ${DOCKER_IMAGE_NAME}:production"
+  only:
+    - main
+  when: manual
+
+# Security Report: Aggregate all security scan results and metrics
+security-report:
+  stage: security-report
+  tags:
+    - st19-runner
+  needs:
+    - job: secrets-scan
+      artifacts: true
+    - job: sast-semgrep
+      artifacts: true
+    - job: sca-trivy
+      artifacts: true
+    - job: image-scan
+      artifacts: true
+  dependencies:
+    - secrets-scan
+    - sast-semgrep
+    - sca-trivy
+    - image-scan
+  script:
+    - echo "Generating security summary report..."
+    - ls -la *.json 2>/dev/null || echo "No JSON reports found in current dir"
+    - python3 ci-scripts/security-summary.py
+  artifacts:
+    paths:
+      - gitleaks-report.json
+      - semgrep-report.json
+      - trivy-sca-report.json
+      - trivy-image-report.json
+      - security-summary.json
+    when: always
+    expire_in: 30 days
+  only:
+    - main
+    - develop

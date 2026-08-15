@@ -1,0 +1,33 @@
+<group name="Mikrotik,">
+
+  <rule id="110000" level="0">
+    <decoded_as>mikrotik</decoded_as>
+    <description>Mikrotik-Event</description>
+  </rule>
+
+
+  <rule id="110001" level="5">
+    <if_sid>110000</if_sid>
+    <match>dhcp-client on ether</match>
+    <description>MikroTik dhcp-client received an IP address $(ip_address)</description>
+  </rule>
+
+  <rule id="110002" level="5">
+    <if_sid>110000</if_sid>
+    <match>rebooted</match>
+    <description>MikroTik router rebooted</description>
+  </rule>
+
+  <rule id="110003" level="5">
+    <if_sid>110000</if_sid>
+    <match>logged out from</match>
+    <description>MikroTik user logged out via $(protocol)</description>
+  </rule>
+
+  <rule id="110004" level="5">
+    <if_sid>110000</if_sid>
+    <match>logged in from</match>
+    <description>MikroTik user logged in from $(ip_address) via $(protocol)</description>
+  </rule>
+
+</group>

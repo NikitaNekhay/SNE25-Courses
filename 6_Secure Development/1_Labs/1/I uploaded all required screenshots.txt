@@ -1,0 +1,4 @@
+I uploaded all required screenshots you asked me for the report. Also I added more detailed screenshots for task 6 especially for 6.3 Artifatcs.
+Screenshots files are named the way they were required for tasks e.g. for task 2: 2_1, 2_2 and etc.
+
+Now link them and paste into the report, note that they have different sizes - but important is to have them readable don't resize t olow them. Put one slide at the possible width, if image resolution is slow and e.g. for artifacts you can put 2 images in a row, instead of one. Also add Figure. Description of the image bellow each screenshot, where Figure goes with the number of figure starting from first screenshot and Description for each screenshot.

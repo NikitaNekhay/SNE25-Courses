@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="Excel%20Tasks%20%C2%B7%20Lectures%203-4_files/css2_SPZE.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Excel Tasks · Lectures 3-4</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #0b1622;
+      --navy: #192e40;
+      --navy-2: #20303d;
+      --orange: #ed561b;
+      --orange-strong: #c8430f;
+      --coral: #f2785c;
+      --text: #182230;
+      --muted: #6b7785;
+      --muted-dark: #9fb0bf;
+      --line: #e7eaee;
+      --panel: #ffffff;
+      --bg: #f2f4f7;
+      --soft: #fff4ec;
+      --shadow: 0 16px 42px rgba(11, 22, 34, 0.10);
+      --ring: 0 0 0 3px rgba(237, 86, 27, 0.22);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Montserrat, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1100px 480px at 85% -8%, rgba(237, 86, 27, 0.06), transparent 60%),
+        var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(820px 360px at 92% -40%, rgba(237, 86, 27, 0.20), transparent 62%),
+        linear-gradient(180deg, var(--navy-2), var(--navy));
+      color: #fff;
+      padding: 30px 18px 40px;
+    }
+
+    .wrap {
+      width: min(900px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header .wrap {
+      position: relative;
+      z-index: 2;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 18px;
+      color: var(--muted-dark);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: color 140ms ease;
+    }
+
+    .back:hover,
+    .back:focus-visible {
+      color: #fff;
+      outline: none;
+    }
+
+    .tab {
+      display: block;
+      width: 46px;
+      height: 7px;
+      border-radius: 2px;
+      background: var(--orange);
+      margin-bottom: 16px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--coral);
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 4.6vw, 50px);
+      line-height: 1.04;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 16px 0 0;
+      color: #d6dee8;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .ghost {
+      position: absolute;
+      right: 2%;
+      top: 50%;
+      transform: translateY(-46%);
+      z-index: 1;
+      margin: 0;
+      font-size: clamp(150px, 26vw, 300px);
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.05);
+      letter-spacing: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    main { padding: 28px 0 56px; }
+
+    .page-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .download-card, .submit-card {
+      display: grid;
+      gap: 22px;
+      padding: 24px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .file-meta {
+      display: grid;
+      gap: 8px;
+      padding: 18px;
+      background: var(--soft);
+      border: 1px solid rgba(237, 86, 27, 0.20);
+      border-radius: 12px;
+    }
+
+    .label {
+      color: var(--orange-strong);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .task-list li {
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      color: var(--muted);
+      font-size: 14.5px;
+      font-weight: 500;
+    }
+
+    .task-list span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--navy);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 10px;
+      border: 1px solid var(--orange);
+      color: #fff;
+      background: var(--orange);
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      background: var(--orange-strong);
+      border-color: var(--orange-strong);
+      box-shadow: var(--ring);
+      outline: none;
+    }
+
+    .secondary {
+      color: var(--navy);
+      background: #fff;
+      border-color: var(--line);
+    }
+
+    .secondary:hover,
+    .secondary:focus-visible {
+      color: var(--orange-strong);
+      background: #fff;
+      border-color: rgba(237, 86, 27, 0.45);
+    }
+
+    .submit-card {
+      gap: 18px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: 14px;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    input {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0 13px;
+      color: var(--text);
+      background: #fff;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    input:focus {
+      border-color: rgba(237, 86, 27, 0.65);
+      box-shadow: var(--ring);
+    }
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 10px;
+      border: 1px solid var(--orange);
+      color: #fff;
+      background: var(--orange);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    button:hover,
+    button:focus-visible {
+      background: var(--orange-strong);
+      border-color: var(--orange-strong);
+      box-shadow: var(--ring);
+      outline: none;
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.72;
+    }
+
+    button.secondary {
+      color: var(--navy);
+      background: #fff;
+      border-color: var(--line);
+    }
+
+    button.secondary:hover,
+    button.secondary:focus-visible {
+      color: var(--orange-strong);
+      background: #fff;
+      border-color: rgba(237, 86, 27, 0.45);
+    }
+
+    .submit-status {
+      color: var(--orange-strong);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .counter {
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: var(--navy);
+      background: #eef2f6;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .result-box {
+      display: none;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(237, 86, 27, 0.20);
+      background: var(--soft);
+    }
+
+    .result-box.active {
+      display: block;
+    }
+
+    @media (max-width: 560px) {
+      header { padding-bottom: 34px; }
+      .ghost { display: none; }
+      .download-card { padding: 20px; }
+      .submit-card { padding: 20px; }
+      .field-grid { grid-template-columns: 1fr; }
+      .button, button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="back" href="https://max-ppv.ru/lectures3-4/index.html">← Back to Lectures 3-4</a>
+      <span class="tab" aria-hidden="true"></span>
+      <p class="eyebrow">Innopolis University · Summer 2026</p>
+      <h1>Excel Tasks</h1>
+      <p class="lead">Download the student workbook with the Lectures 3-4 unit economics tasks and submit your Google Spreadsheet link.</p>
+    </div>
+    <p class="ghost" aria-hidden="true">XLSX</p>
+  </header>
+
+  <main class="wrap page-stack">
+    <section class="download-card" aria-labelledby="download-title">
+      <div class="file-meta">
+        <span class="label">Excel workbook</span>
+        <h2 id="download-title">Lecture3-4_Excel_Tasks_STUDENT.xlsx</h2>
+        <p>Use this file for the Excel practice tasks after Lectures 3-4.</p>
+      </div>
+
+      <ul class="task-list" aria-label="Workbook tasks">
+        <li><span>1</span><div><strong>UE Funnel:</strong> build and calculate the unit economics funnel.</div></li>
+        <li><span>2</span><div><strong>Bottleneck:</strong> identify the weakest point in the funnel.</div></li>
+        <li><span>3</span><div><strong>RICE:</strong> prioritize improvements using reach, impact, confidence, and effort.</div></li>
+        <li><span>4</span><div><strong>Feature ROI:</strong> estimate whether the selected feature pays off.</div></li>
+      </ul>
+
+      <div class="actions">
+        <a class="button" href="https://max-ppv.ru/lectures3-4/Lecture3-4_Excel_Tasks_STUDENT.xlsx" download="">Download XLSX</a>
+        <a class="button secondary" href="https://max-ppv.ru/lectures3-4/index.html">Back to materials</a>
+      </div>
+    </section>
+
+    <section class="submit-card" aria-labelledby="submit-title">
+      <div>
+        <span class="label">Submit answer</span>
+        <h2 id="submit-title">Send your Google Spreadsheet link</h2>
+        <p>Make sure the document is shared so the instructor can open it.</p>
+      </div>
+
+      <form id="xlsxForm">
+        <div class="field-grid">
+          <label class="field">Alias
+            <input name="alias" type="text" autocomplete="nickname" required="" placeholder="@telegram or nickname">
+          </label>
+
+          <label class="field">Google Spreadsheet link
+            <input name="sheet_link" type="url" inputmode="url" required="" placeholder="https://docs.google.com/spreadsheets/d/...">
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="submitButton">Send answer</button>
+          <button class="secondary" type="reset">Clear</button>
+          <span class="submit-status" id="submitStatus" aria-live="polite"></span>
+        </div>
+
+        <div class="counter" id="counter">Spreadsheet link: not submitted</div>
+      </form>
+
+      <section class="result-box" id="resultBox" aria-live="polite">
+        <p id="resultMessage">Spreadsheet link sent. Thank you!</p>
+      </section>
+    </section>
+  </main>
+  <script>
+    const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycbwKgUSOet9lljk9vBWwtmxGU3TF9MqchGujj0c9qwWLGKpLQPOyPC94euapQ2MQm0LfRw/exec";
+    const form = document.querySelector("#xlsxForm");
+    const counter = document.querySelector("#counter");
+    const resultBox = document.querySelector("#resultBox");
+    const resultMessage = document.querySelector("#resultMessage");
+    const submitButton = document.querySelector("#submitButton");
+    const submitStatus = document.querySelector("#submitStatus");
+
+    function collectData() {
+      const fd = new FormData(form);
+      return {
+        sheet: "xlsx_tasks",
+        target_sheet: "xlsx_tasks",
+        submitted_at: new Date().toISOString(),
+        alias: String(fd.get("alias") || "").trim(),
+        sheet_link: String(fd.get("sheet_link") || "").trim(),
+        assignment: "Lecture 3-4 Excel Tasks"
+      };
+    }
+
+    function endpointPayload(data) {
+      return {
+        sheet: "xlsx_tasks",
+        target_sheet: "xlsx_tasks",
+        submitted_at: data.submitted_at,
+        telegram: data.alias,
+        comment: `Lecture 3-4 Excel tasks Google Spreadsheet: ${data.sheet_link}`,
+        topics: [{
+          id: 1,
+          block: "Excel Tasks",
+          title: `Google Spreadsheet link: ${data.sheet_link}`,
+          known: false,
+          interesting: Boolean(data.sheet_link)
+        }]
+      };
+    }
+
+    function updateCounter() {
+      counter.textContent = collectData().sheet_link
+        ? "Spreadsheet link: ready to submit"
+        : "Spreadsheet link: not submitted";
+    }
+
+    async function submitData(data) {
+      const body = new URLSearchParams();
+      body.set("payload", JSON.stringify(endpointPayload(data)));
+      await fetch(SUBMIT_ENDPOINT, { method: "POST", mode: "no-cors", body });
+      return { saved: true };
+    }
+
+    form.addEventListener("input", updateCounter);
+
+    form.addEventListener("reset", () => {
+      window.setTimeout(updateCounter, 0);
+      submitStatus.textContent = "";
+      resultBox.classList.remove("active");
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const data = collectData();
+      submitButton.disabled = true;
+      submitStatus.textContent = "Sending...";
+
+      try {
+        await submitData(data);
+        resultMessage.textContent = "Spreadsheet link sent. Thank you!";
+        submitStatus.textContent = "Sent";
+      } catch (error) {
+        resultMessage.textContent = "Could not send. Please check the link and try again.";
+        submitStatus.textContent = "Could not send";
+      } finally {
+        submitButton.disabled = false;
+        resultBox.classList.add("active");
+        updateCounter();
+      }
+    });
+
+    updateCounter();
+  </script>
+
+
+<div style="all: initial; position: fixed !important; display: block !important; z-index: 2147483647 !important"></div></body></html>

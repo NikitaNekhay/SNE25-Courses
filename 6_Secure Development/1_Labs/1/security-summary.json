@@ -1,0 +1,45 @@
+{
+  "pipeline_id": "26",
+  "commit_sha": "1a342090",
+  "branch": "main",
+  "timestamp": "2026-02-14T20:08:50.608409Z",
+  "scans": {
+    "secrets": {
+      "tool": "Gitleaks",
+      "leaks_found": 0
+    },
+    "sast": {
+      "tool": "Semgrep",
+      "total": 0,
+      "by_severity": {}
+    },
+    "sca": {
+      "tool": "Trivy",
+      "total": 1,
+      "by_severity": {
+        "CRITICAL": 0,
+        "HIGH": 0,
+        "MEDIUM": 1,
+        "LOW": 0
+      }
+    },
+    "image": {
+      "tool": "Trivy",
+      "total": 0,
+      "by_severity": {
+        "CRITICAL": 0,
+        "HIGH": 0,
+        "MEDIUM": 0,
+        "LOW": 0
+      }
+    }
+  },
+  "metrics": {
+    "scan_pass_rate_pct": 100.0,
+    "total_critical": 0,
+    "total_high": 0,
+    "total_medium": 1,
+    "total_low": 0,
+    "total_findings": 1
+  }
+}

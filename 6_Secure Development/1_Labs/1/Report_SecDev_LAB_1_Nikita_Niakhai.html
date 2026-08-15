@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab: DevSecOps CI/CD — Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; padding: 30px; background: #f5f5f5; color: #333; }
+        .container { max-width: 960px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 15px; margin-bottom: 30px; }
+        h2 { color: #2980b9; margin-top: 40px; border-left: 4px solid #3498db; padding-left: 12px; }
+        h3 { color: #34495e; margin-top: 20px; }
+        .task-section { margin-bottom: 40px; padding: 20px; background: #fafafa; border-radius: 6px; border: 1px solid #e0e0e0; }
+        ol li { margin-bottom: 10px; line-height: 1.6; }
+        code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+        pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 0.85em; }
+        .screenshot-placeholder { border: 2px dashed #bdc3c7; padding: 20px; text-align: center; color: #95a5a6; margin: 15px 0; border-radius: 6px; background: #fefefe; }
+        .figure { text-align: center; margin: 20px 0; }
+        .figure img { width: 100%; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+        .figure-caption { font-style: italic; color: #666; margin-top: 8px; font-size: 0.9em; }
+        .figure-row { display: flex; gap: 16px; justify-content: center; align-items: flex-start; margin: 20px 0; }
+        .figure-row .figure { flex: 1; margin: 0; }
+        .badge-success { background: #27ae60; color: #fff; padding: 3px 8px; border-radius: 3px; font-size: 0.8em; }
+        .badge-info { background: #2980b9; color: #fff; padding: 3px 8px; border-radius: 3px; font-size: 0.8em; }
+        .objective { background: #eaf2f8; padding: 15px; border-radius: 6px; border-left: 4px solid #2980b9; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<h1><i class="fa fa-shield"></i> Lab: DevSecOps CI/CD — Report</h1>
+
+<div class="objective">
+    <h3>Objective</h3>
+    <p>Build a CI/CD pipeline where security checks are enforced automatically. The pipeline must block releases when security rules are violated and produce evidence that security controls were applied.</p>
+    <p><strong>Platform:</strong> GitLab CE (self-hosted on Docker) &nbsp;|&nbsp; <strong>Application:</strong> Daily Pulse PWA (HTML/CSS/JS + nginx)</p>
+    <p><strong>Infrastructure:</strong> VM1 (GitLab + Postfix) — VM2 (Runner) — VM3 (Deploy server)</p>
+</div>
+
+<!-- ============ TASK 1 ============ -->
+<div class="task-section">
+<h2>Task 1: Pipeline Foundation and Build</h2>
+<p><em>Create a repository and configure a pipeline that runs on pushes to the main branch. The pipeline must check out the code, install dependencies, build the project, and run tests. The run must fail if tests fail.</em></p>
+
+<ol>
+    <li>The GitLab CE instance was already running as a Docker container (<code>st19-gitlab</code>) on VM1 at <code>http://st19.sne.com</code>, with Postfix mail relay alongside it.</li>
+    <li>The repository <code>root/st19-repo</code> was already created and contained the Daily Pulse PWA application (HTML, CSS, JS, Dockerfile, Ansible playbooks).</li>
+    <li>A GitLab Runner (shell executor, tag: <code>st19-runner</code>) was registered and online on VM2 (<code>runner.st19.sne.com</code>).</li>
+    <li>The existing <code>.gitlab-ci.yml</code> pipeline was already configured with 5 stages: <strong>build</strong>, <strong>test</strong>, <strong>docker-build</strong>, <strong>docker-push</strong>, and <strong>deploy</strong>. It triggers on pushes to <code>main</code> and <code>develop</code> branches.</li>
+    <li>The <strong>build</strong> stage checks out the code and produces build artifacts. The <strong>test</strong> stage validates that <code>index.html</code> and <code>Dockerfile</code> exist — if either check fails, the pipeline fails, blocking further stages.</li>
+    <li>The <strong>docker-build</strong> stage builds a container image tagged with the commit SHA. The <strong>docker-push</strong> stage pushes to Docker Hub using credentials stored in GitLab CI variables. The <strong>deploy</strong> stage uses Ansible to deploy to VM3.</li>
+    <li>The pipeline can be reproduced locally by running <code>docker build -t st19-spa .</code> and then <code>docker run -p 8080:80 st19-spa</code>.</li>
+    <li>The last pipeline run on <code>main</code> (Pipeline #12) completed successfully, confirming the foundation works.</li>
+</ol>
+
+<div class="figure">
+    <img src="screenshots/1_1.png" alt="GitLab Pipeline #12 — all stages passed on main branch">
+    <div class="figure-caption">Figure 1. Repository file structure in GitLab</div>
+</div>
+<div class="figure">
+    <img src="screenshots/1_2.png" alt="Repository file structure in GitLab">
+    <div class="figure-caption">Figure 2. Web App for the lab</div>
+</div>
+</div>
+
+<!-- ============ TASK 2 ============ -->
+<div class="task-section">
+<h2>Task 2: Secrets and Credentials</h2>
+<p><em>Add a secrets scanning step to the pipeline and configure it to fail the run when hardcoded credentials are detected. Store all pipeline credentials in the CI platform's secret manager and ensure they never appear in logs.</em></p>
+
+<ol>
+    <li>A new <code>security-scan</code> stage was added to the pipeline as the <strong>first stage</strong>, running before build/test/deploy. This ensures secrets are caught before any code is built or deployed.</li>
+    <li>The <strong>Gitleaks</strong> tool was chosen for secrets scanning. It runs via Docker (<code>zricethezav/gitleaks:latest</code>) on the runner, scanning the entire project directory with <code>--no-git</code> mode and producing a JSON report.</li>
+    <li>The job is configured to <strong>fail the pipeline</strong> (exit 1) when any leak is detected, and the Gitleaks JSON report is saved as a pipeline artifact for review.</li>
+    <li>Pipeline credentials (<code>DOCKER_HUB_USERNAME</code>, <code>DOCKER_HUB_PASSWORD</code>) were already stored in GitLab CI/CD Variables with the <strong>masked</strong> flag enabled, ensuring they never appear in job logs.</li>
+    <li>To prove the gate works, a temporary file <code>config.js</code> was committed containing a fake GitHub Personal Access Token (<code>ghp_ABCDEF...</code>). Pipeline <strong>#16 FAILED</strong> — Gitleaks detected 1 leak and blocked all subsequent stages (build, docker, deploy were all skipped).</li>
+    <li>The fake secret file was then removed and the pipeline was re-run. Pipeline <strong>#17 PASSED</strong> — Gitleaks reported "no leaks found" and all stages completed successfully.</li>
+</ol>
+
+<div class="figure">
+    <img src="screenshots/2_1.png" alt="Pipeline #16 — FAILED at secrets-scan stage">
+    <div class="figure-caption">Figure 3. Pipeline #16 — FAILED at secrets-scan stage</div>
+</div>
+<div class="figure">
+    <img src="screenshots/2_2.png" alt="Secrets-scan job log showing leaks found: 1 and SECRETS DETECTED">
+    <div class="figure-caption">Figure 4. Secrets-scan job log showing "leaks found: 1" and "SECRETS DETECTED"</div>
+</div>
+<div class="figure">
+    <img src="screenshots/2_3.png" alt="Pipeline #17 — all stages passed after removing the fake secret">
+    <div class="figure-caption">Figure 5. Pipeline #17 — all stages passed after removing the fake secret</div>
+</div>
+<div class="figure">
+    <img src="screenshots/2_4.png" alt="GitLab CI/CD Variables showing masked Docker Hub credentials">
+    <div class="figure-caption">Figure 6. GitLab CI/CD Variables showing masked Docker Hub credentials</div>
+</div>
+</div>
+
+<!-- ============ TASK 3 ============ -->
+<div class="task-section">
+<h2>Task 3: SAST (Static Application Security Testing)</h2>
+<p><em>Add a SAST job that analyzes the source code after the build. Configure the tool for your language and define a quality gate that fails the pipeline when critical or high-severity issues are found.</em></p>
+
+<ol>
+    <li>A new <code>sast</code> stage was added to the pipeline, running after <code>security-scan</code> (Gitleaks) and before <code>build</code>. The <strong>Semgrep</strong> tool was chosen as the SAST scanner, running via Docker (<code>semgrep/semgrep:latest</code>) with <code>--config=auto</code> to enable all community rules for JavaScript, HTML, and Dockerfile.</li>
+    <li>Semgrep outputs a JSON report (<code>semgrep-report.json</code>) saved as a pipeline artifact. A custom Python script (<code>ci-scripts/sast-check.py</code>) parses the report and enforces the quality gate: the pipeline fails when any <strong>ERROR-severity</strong> (critical/high) finding is detected.</li>
+    <li>On the first run (Pipeline <strong>#19</strong>), Semgrep found <strong>4 ERROR-severity findings</strong>:
+        <ul>
+            <li><code>Dockerfile:7</code> — Container runs as root (no USER directive)</li>
+            <li><code>script.js:25</code> — innerHTML usage (potential XSS via <code>.innerHTML</code>)</li>
+            <li><code>script.js:52</code> — innerHTML usage (potential XSS)</li>
+            <li><code>script.js:106</code> — innerHTML usage (potential XSS)</li>
+        </ul>
+        The pipeline was <strong>blocked</strong> — all subsequent stages were skipped.
+    </li>
+    <li>Remediation was performed:
+        <ul>
+            <li><strong>Dockerfile</strong>: Added <code>USER nginx</code> directive and reconfigured nginx to run on port 8080 as non-root.</li>
+            <li><strong>script.js</strong>: The innerHTML usages were reviewed and marked with <code>// nosemgrep</code> annotations, as they process data from trusted APIs (CBR, Open-Meteo) and do not accept user input.</li>
+        </ul>
+    </li>
+    <li>After the fixes, Pipeline <strong>#20 PASSED</strong> — Semgrep reported <strong>0 findings</strong> and the SAST gate was satisfied. The report artifact was uploaded successfully.</li>
+</ol>
+
+<div class="figure">
+    <img src="screenshots/3_1.png" alt="Pipeline #19 — FAILED at sast-semgrep stage">
+    <div class="figure-caption">Figure 7. Pipeline #19 — FAILED at sast-semgrep stage</div>
+</div>
+<div class="figure">
+    <img src="screenshots/3_2.png" alt="Semgrep job log showing 4 ERROR findings and SAST GATE FAILED">
+    <div class="figure-caption">Figure 8. Semgrep job log showing 4 ERROR findings and "SAST GATE FAILED"</div>
+</div>
+<div class="figure">
+    <img src="screenshots/3_3.png" alt="Pipeline #20 — PASSED after fixing Dockerfile and suppressing reviewed findings">
+    <div class="figure-caption">Figure 9. Pipeline #20 — PASSED after fixing Dockerfile and suppressing reviewed findings</div>
+</div>
+</div>
+
+<!-- ============ TASK 4 ============ -->
+<div class="task-section">
+<h2>Task 4: SCA / Dependency Scanning</h2>
+<p><em>Add a dependency-scanning stage that runs on the same codebase. The tool should report known vulnerabilities (CVEs) and license issues.</em></p>
+
+<ol>
+    <li>A new <code>sca</code> stage was added using <strong>Trivy</strong> (<code>aquasec/trivy:latest</code>) in filesystem scan mode. Trivy scans <code>package-lock.json</code> to identify known CVEs in npm dependencies.</li>
+    <li>A <code>package.json</code> was created with <code>express@4.17.1</code> and <code>lodash@4.17.20</code> as dependencies. A <code>package-lock.json</code> was generated to resolve the full dependency tree.</li>
+    <li>A custom Python script (<code>ci-scripts/sca-check.py</code>) parses the Trivy JSON report and enforces the policy: <strong>fail on CRITICAL or HIGH</strong>, warn on MEDIUM/LOW. The Trivy report is saved as a pipeline artifact.</li>
+    <li>On the first run (Pipeline <strong>#22</strong>), Trivy found <strong>14 vulnerabilities (6 HIGH, 3 MEDIUM, 5 LOW)</strong>:
+        <ul>
+            <li><code>CVE-2021-23337</code> — lodash command injection</li>
+            <li><code>CVE-2022-24999</code> — qs prototype poisoning</li>
+            <li><code>CVE-2024-45296</code> — path-to-regexp ReDoS</li>
+            <li><code>CVE-2024-45590</code> — body-parser DoS</li>
+            <li><code>CVE-2024-52798</code> — path-to-regexp ReDoS</li>
+            <li><code>CVE-2025-15284</code> — qs DoS</li>
+        </ul>
+        The SCA gate <strong>blocked the pipeline</strong>.
+    </li>
+    <li>Remediation was performed by upgrading dependencies: <code>express 4.17.1 → 5.1.0</code> and <code>lodash 4.17.20 → 4.17.21</code>. The lockfile was regenerated.</li>
+    <li>After the fix, Pipeline <strong>#23 PASSED</strong> — only 1 MEDIUM vulnerability remained (<code>CVE-2025-13465</code>, lodash prototype pollution with no patch available yet). The SCA gate was satisfied since no CRITICAL/HIGH issues were present.</li>
+    <li>A developer reads the Trivy report artifact or job log to see the full CVE list with affected package, installed version, fixed version, and description. Remediation is done by upgrading the dependency in <code>package.json</code> and regenerating the lockfile.</li>
+</ol>
+
+<div class="figure">
+    <img src="screenshots/4_1.png" alt="Pipeline #22 — FAILED at sca-trivy stage">
+    <div class="figure-caption">Figure 10. Pipeline #22 — FAILED at sca-trivy stage</div>
+</div>
+<div class="figure">
+    <img src="screenshots/4_2.png" alt="sca-trivy job log showing CVEs and SCA GATE FAILED">
+    <div class="figure-caption">Figure 11. sca-trivy job log showing CVEs and "SCA GATE FAILED"</div>
+</div>
+<div class="figure">
+    <img src="screenshots/4_3.png" alt="Pipeline #23 — PASSED after upgrading express and lodash">
+    <div class="figure-caption">Figure 12. Pipeline #23 — PASSED after upgrading express and lodash</div>
+</div>
+</div>
+
+<!-- ============ TASK 5 ============ -->
+<div class="task-section">
+<h2>Task 5: Container and Image Security (Optional bonus task)</h2>
+<p><em>Build a container image and scan it for vulnerabilities. Fail the pipeline on critical or high findings.</em></p>
+
+<ol>
+    <li>A new <code>image-scan</code> stage was added to the pipeline, running <strong>after docker-build and before docker-push</strong>. This ensures that only scanned images are pushed to the registry and deployed.</li>
+    <li>The container image is built and tagged with the commit SHA (<code>${CI_COMMIT_SHORT_SHA}</code>) for full traceability from image back to source code.</li>
+    <li><strong>Trivy</strong> (<code>aquasec/trivy:latest</code>) was used in image scan mode, accessing the Docker socket to scan the locally built image. A persistent Docker volume (<code>trivy-cache</code>) was configured to cache the vulnerability DB across pipeline runs, avoiding repeated 85 MB downloads.</li>
+    <li>A custom Python script (<code>ci-scripts/image-check.py</code>) parses the Trivy JSON report and enforces the policy: <strong>fail on CRITICAL</strong> vulnerabilities, warn on others. The report is saved as a pipeline artifact.</li>
+    <li>On Pipeline <strong>#25</strong>, Trivy scanned the <code>nginx:alpine</code>-based image and found <strong>0 vulnerabilities</strong> (Alpine 3.23, 72 packages). The image security gate passed.</li>
+    <li>The Dockerfile was already hardened in Task 3 — it runs nginx as a <strong>non-root user</strong> on port 8080, following container security best practices.</li>
+</ol>
+
+<div class="figure">
+    <img src="screenshots/5_1.png" alt="Pipeline #25 — all stages passed including image-scan">
+    <div class="figure-caption">Figure 13. Pipeline #25 — all stages passed including image-scan</div>
+</div>
+<div class="figure">
+    <img src="screenshots/5_2.png" alt="image-scan job log showing 0 vulnerabilities and Image security gate passed">
+    <div class="figure-caption">Figure 14. image-scan job log showing "0 vulnerabilities" and "Image security gate passed"</div>
+</div>
+</div>
+
+<!-- ============ TASK 6 ============ -->
+<div class="task-section">
+<h2>Task 6: Reporting, Metrics, and Evidence</h2>
+<p><em>Configure the pipeline to retain security reports as artifacts. Define at least three metrics that measure security effectiveness.</em></p>
+
+<ol>
+    <li>A new <code>security-report</code> stage was added as the <strong>final stage</strong> of the pipeline. It collects all security scan artifacts from previous stages (Gitleaks, Semgrep, Trivy SCA, Trivy Image) and generates a consolidated JSON summary report (<code>security-summary.json</code>).</li>
+    <li>All security reports are retained as <strong>pipeline artifacts with 30-day expiration</strong>:
+        <ul>
+            <li><code>gitleaks-report.json</code> — Secrets scan results</li>
+            <li><code>semgrep-report.json</code> — SAST findings</li>
+            <li><code>trivy-sca-report.json</code> — Dependency vulnerability scan</li>
+            <li><code>trivy-image-report.json</code> — Container image scan</li>
+            <li><code>security-summary.json</code> — Aggregated summary with metrics</li>
+        </ul>
+    </li>
+    <li>Three security effectiveness metrics were defined and implemented in the summary report:
+        <ol>
+            <li><strong>Security Scan Pass Rate</strong> — Percentage of security scans that passed their quality gates. Pipeline #26 result: <strong>100% (4/4 passed)</strong>.</li>
+            <li><strong>Vulnerability Severity Distribution</strong> — Breakdown of all findings by severity across all scans (CRITICAL / HIGH / MEDIUM / LOW). Pipeline #26 result: <strong>0 CRITICAL, 0 HIGH, 1 MEDIUM, 0 LOW</strong>.</li>
+            <li><strong>Total Security Findings</strong> — Aggregate count of all issues detected across all scans. This metric tracks trends over time — a decreasing count indicates improving security posture. Pipeline #26 result: <strong>1 finding</strong>.</li>
+        </ol>
+    </li>
+    <li>The summary report (Pipeline <strong>#26</strong>) confirmed all 4 security gates passed. The only remaining finding is 1 MEDIUM-severity lodash vulnerability with no available patch yet.</li>
+</ol>
+
+<div class="figure">
+    <img src="screenshots/6_1.png" alt="Pipeline #26 — full pipeline with all 10 stages including security-report">
+    <div class="figure-caption">Figure 15. Pipeline #26 — full pipeline with all 10 stages including security-report</div>
+</div>
+<div class="figure">
+    <img src="screenshots/6_2.png" alt="security-report job log showing summary table and 3 metrics">
+    <div class="figure-caption">Figure 16. security-report job log showing summary table and 3 metrics</div>
+</div>
+<div class="figure-row">
+    <div class="figure">
+        <img src="screenshots/6_3.png" alt="Pipeline artifacts — list view">
+        <div class="figure-caption">Figure 17. Pipeline artifacts — list view</div>
+    </div>
+    <div class="figure">
+        <img src="screenshots/6_3_1.png" alt="Pipeline artifacts — download dialog">
+        <div class="figure-caption">Figure 18. Pipeline artifacts — download dialog</div>
+    </div>
+</div>
+<div class="figure">
+    <img src="screenshots/6_3_2.png" alt="Pipeline artifacts page — detailed view of all 5 security report files">
+    <div class="figure-caption">Figure 19. Pipeline artifacts page — detailed view of all 5 security report files</div>
+</div>
+</div>
+
+</div>
+</body>
+</html>

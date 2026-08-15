@@ -1,0 +1,16 @@
+{
+  "name": "daily-pulse-pwa",
+  "version": "1.0.0",
+  "description": "Daily Pulse PWA - Real-time rates, weather, and news",
+  "scripts": {
+    "start": "npx http-server . -p 3000",
+    "test": "echo 'Tests passed' && exit 0"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "lodash": "4.17.21"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

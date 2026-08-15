@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="Lectures%203-4%20Test_files/css2_w5VS.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lectures 3-4 Test</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #0b1622;
+      --navy: #192e40;
+      --navy-2: #20303d;
+      --orange: #ed561b;
+      --orange-strong: #c8430f;
+      --coral: #f2785c;
+      --soft: #fbe3d8;
+      --text: #182230;
+      --muted: #6b7785;
+      --muted-dark: #9fb0bf;
+      --line: #e7eaee;
+      --panel: #ffffff;
+      --bg: #f2f4f7;
+      --green: #2e8b57;
+      --warn-bg: #fff4ec;
+      --warn-text: #9a3b12;
+      --shadow: 0 16px 42px rgba(11, 22, 34, 0.10);
+      --ring: 0 0 0 3px rgba(237, 86, 27, 0.22);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Montserrat, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1100px 480px at 85% -8%, rgba(237, 86, 27, 0.06), transparent 60%),
+        var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---------- branded header ---------- */
+    header {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(820px 360px at 92% -40%, rgba(237, 86, 27, 0.20), transparent 62%),
+        linear-gradient(180deg, var(--navy-2), var(--navy));
+      color: #fff;
+      padding: 30px 18px 30px;
+    }
+
+    .wrap { width: min(1080px, calc(100% - 32px)); margin: 0 auto; }
+    header .wrap { position: relative; z-index: 2; }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 18px;
+      color: var(--muted-dark);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: color 140ms ease;
+    }
+    .back:hover { color: #fff; }
+
+    .tab {
+      display: block;
+      width: 46px;
+      height: 7px;
+      border-radius: 2px;
+      background: var(--orange);
+      margin-bottom: 16px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--coral);
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 4.6vw, 50px);
+      line-height: 1.04;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 16px 0 0;
+      color: #d6dee8;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .ghost {
+      position: absolute;
+      right: 2%;
+      top: 50%;
+      transform: translateY(-46%);
+      z-index: 1;
+      margin: 0;
+      font-size: clamp(150px, 26vw, 300px);
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.05);
+      letter-spacing: -0.04em;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    main { padding: 28px 0 56px; }
+    form { display: grid; gap: 16px; }
+
+    /* ---------- cards ---------- */
+    .section, .topic, .task, .question, .context-card, .result-box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+    .section, .result-box, .context-card { padding: 20px; }
+
+    .section { position: relative; }
+
+    /* ---------- inputs ---------- */
+    label, label.field {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    label.field, .student-grid { max-width: 440px; }
+    .student-grid { display: grid; grid-template-columns: minmax(220px, 440px); gap: 14px; }
+
+    input[type="text"], textarea {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 13px;
+      color: var(--text);
+      background: #fff;
+      font: inherit;
+      font-weight: 500;
+      transition: border-color 140ms ease, box-shadow 140ms ease;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+
+    input:focus, textarea:focus, button:focus-visible,
+    .check:focus-within, .option:focus-within {
+      outline: none;
+      border-color: var(--orange);
+      box-shadow: var(--ring);
+    }
+
+    .note {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      font-weight: 500;
+    }
+
+    /* ---------- pills / meta ---------- */
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eef1f5;
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    h2, .topic-title, .question h2, .result-title {
+      margin: 0;
+      font-weight: 800;
+      letter-spacing: -0.005em;
+      color: var(--text);
+    }
+
+    /* ---------- survey: topics ---------- */
+    .topics { display: grid; gap: 14px; }
+    .topic {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 18px;
+      padding: 18px;
+      align-items: center;
+      transition: border-color 140ms ease, transform 140ms ease;
+    }
+    .topic:hover { border-color: rgba(237, 86, 27, 0.4); transform: translateY(-1px); }
+    .topic .pill:first-child {
+      background: var(--navy);
+      color: #fff;
+      min-width: 28px;
+      justify-content: center;
+    }
+    .topic-title { font-size: 18px; line-height: 1.25; }
+    .content { margin: 9px 0 0; color: var(--muted); font-size: 14px; font-weight: 500; line-height: 1.5; }
+
+    .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .check {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--text);
+      background: #fff;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      user-select: none;
+      text-align: center;
+      transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
+    }
+    .check input, .option input { position: absolute; opacity: 0; pointer-events: none; }
+    .check:hover { border-color: rgba(237, 86, 27, 0.45); }
+    .check:has(input:checked) {
+      border-color: var(--orange);
+      color: var(--orange-strong);
+      background: var(--soft);
+    }
+
+    /* ---------- tasks ---------- */
+    .task { display: grid; gap: 14px; padding: 20px; }
+    .task-head, .question-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 800;
+    }
+    .task-head .pill, .question-head span {
+      border-radius: 999px;
+      background: #eef1f5;
+      padding: 4px 10px;
+    }
+    .task-head strong, .question-head strong { color: var(--orange-strong); letter-spacing: 0.02em; }
+    .task h2 { font-size: 22px; line-height: 1.18; }
+    .prompt { margin: 0; color: var(--muted); font-size: 15px; font-weight: 500; line-height: 1.55; }
+
+    .given { display: grid; gap: 8px; max-width: 560px; margin: 0; padding: 0; list-style: none; }
+    .given li {
+      display: flex; justify-content: space-between; gap: 16px;
+      padding: 11px 13px; border: 1px solid var(--line); border-radius: 10px;
+      background: #f8fafc; font-weight: 700; font-size: 14px;
+    }
+    .given span { color: var(--muted); font-weight: 800; }
+    .steps { display: grid; gap: 10px; max-width: 720px; margin: 0; padding-left: 22px; color: var(--muted); font-weight: 600; font-size: 14px; }
+
+    /* ---------- quiz ---------- */
+    .context-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .context-card { display: grid; gap: 12px; }
+    .question { padding: 18px; display: grid; gap: 13px; }
+    .question h2 { font-size: 21px; line-height: 1.2; }
+    .screen-grid { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; }
+    .screen-grid img {
+      max-width: min(100%, 360px); max-height: 560px; object-fit: contain;
+      border: 1px solid var(--line); border-radius: 12px; background: #fff;
+    }
+    .options { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+    .option {
+      position: relative; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; gap: 5px; min-height: 66px;
+      border: 1px solid var(--line); border-radius: 11px; padding: 8px;
+      text-align: center; cursor: pointer; font-size: 12.5px; font-weight: 700; color: var(--text);
+      transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
+    }
+    .option span {
+      color: #fff; background: var(--navy);
+      width: 24px; height: 24px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800;
+      transition: background 140ms ease;
+    }
+    .option:hover { border-color: rgba(237, 86, 27, 0.45); }
+    .option:has(input:checked) { border-color: var(--orange); background: var(--soft); color: var(--orange-strong); }
+    .option:has(input:checked) span { background: var(--orange); }
+
+    /* ---------- actions ---------- */
+    .actions {
+      position: sticky; bottom: 0;
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: space-between; align-items: center;
+      padding: 16px 0;
+      background: linear-gradient(180deg, rgba(242, 244, 247, 0), var(--bg) 30%);
+    }
+    .counter { color: var(--muted); font-size: 13.5px; font-weight: 800; }
+
+    button {
+      min-height: 46px; border: 0; border-radius: 10px; padding: 11px 20px;
+      color: #fff; background: var(--orange); font: inherit; font-weight: 800;
+      letter-spacing: 0.01em; cursor: pointer;
+      transition: background 140ms ease, transform 120ms ease;
+    }
+    button:hover { background: var(--orange-strong); }
+    button:active { transform: translateY(1px); }
+    button:disabled { cursor: wait; opacity: 0.72; }
+    button.secondary { color: var(--navy); background: #fff; border: 1px solid var(--line); }
+    button.secondary:hover { background: #f8fafc; border-color: rgba(237, 86, 27, 0.4); }
+    .task-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: -2px;
+    }
+    .task-status {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    /* ---------- result ---------- */
+    .result-box { display: none; margin-top: 18px; gap: 12px; }
+    .result-box.active { display: grid; }
+    .result-title { font-size: 21px; }
+    .result-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .warning {
+      margin: 0; padding: 11px 13px; border-radius: 10px;
+      color: var(--warn-text); background: var(--warn-bg);
+      border: 1px solid rgba(237, 86, 27, 0.18);
+      font-size: 13.5px; font-weight: 700;
+    }
+    #resultText { min-height: 120px; }
+
+    @media (max-width: 900px) {
+      .options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .context-grid { grid-template-columns: 1fr; }
+      .screen-grid img { max-width: 100%; }
+    }
+    @media (max-width: 760px) {
+      .student-grid, .topic, .checks { grid-template-columns: 1fr; }
+      .actions { position: static; }
+      .given li { display: grid; gap: 4px; }
+      .ghost { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="back" href="https://max-ppv.ru/lectures3-4/index.html">← Lectures 3-4</a>
+      <span class="tab" aria-hidden="true"></span>
+      <p class="eyebrow">2026 Summer · Lecture Test</p>
+      <h1>Lectures 3-4 Test</h1>
+      <p class="lead">Answer in free form. Write formulas, intermediate calculations, assumptions, and short explanations where needed.</p>
+    </div>
+    <p class="ghost" aria-hidden="true">$</p>
+  </header>
+
+  <main class="wrap">
+    <form id="testForm">
+      <section class="section">
+        <label class="field">Telegram
+          <input name="telegram" type="text" autocomplete="username" placeholder="@username" required="">
+        </label>
+      </section>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Topic 1</span><span class="pill">Question 1</span><strong>Product Manager Lens</strong></div>
+        <h2>Product manager lens</h2>
+        <p class="prompt">How does a product manager's view of a product
+ differ from a purely feature-focused view? Name one financial question a
+ PM should ask before shipping or scaling a feature.</p>
+        <label class="field">Answer
+          <textarea name="question_1" required="" placeholder="Write your answer here"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-question-id="1">Send answer</button>
+          <span class="task-status" id="questionStatus1" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Topic 2</span><span class="pill">Question 2</span><strong>Unit Economics Foundations</strong></div>
+        <h2>Fixed and variable costs</h2>
+        <p class="prompt">For an AI calorie tracker, classify the 
+following costs as fixed or variable and explain your logic: base cloud 
+hosting fee, LLM/API tokens per user request, App Store advertising 
+spend, designer salary, payment processing fee, and support cost that 
+grows with the number of users.</p>
+        <label class="field">Answer
+          <textarea name="question_2" required="" placeholder="Classify each cost and explain why"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-question-id="2">Send answer</button>
+          <span class="task-status" id="questionStatus2" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Topic 3</span><span class="pill">Question 3</span><strong>Core Definitions</strong></div>
+        <h2>Unit economics vocabulary</h2>
+        <p class="prompt">Define unit economics in your own words. What is a unit? Briefly explain CAC, LTV, contribution margin, and payback period.</p>
+        <label class="field">Answer
+          <textarea name="question_3" required="" placeholder="Write definitions in your own words"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-question-id="3">Send answer</button>
+          <span class="task-status" id="questionStatus3" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Topic 4</span><span class="pill">Question 4</span><strong>Where UE Came From</strong></div>
+        <h2>Why unit economics matters</h2>
+        <p class="prompt">Why did unit economics become especially 
+important after the dot-com crash? Explain why growth, revenue, or 
+active users can be misleading if the economics of one unit are broken.</p>
+        <label class="field">Answer
+          <textarea name="question_4" required="" placeholder="Write your answer here"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-question-id="4">Send answer</button>
+          <span class="task-status" id="questionStatus4" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Topic 5</span><span class="pill">Question 5</span><strong>CAC Calculation</strong></div>
+        <h2>Calculate CAC</h2>
+        <p class="prompt">A mobile app uses paid acquisition. CPC is 
+$0.60. Click-to-install conversion is 25%. Install-to-registration 
+conversion is 40%. Registration-to-paid conversion is 8%.</p>
+        <p class="prompt">Calculate the CAC of one paying customer. Show the funnel conversion and the final CAC.</p>
+        <label class="field">Answer
+          <textarea name="question_5" required="" placeholder="Show your formula and final CAC"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-question-id="5">Send answer</button>
+          <span class="task-status" id="questionStatus5" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Topic 6</span><span class="pill">Question 6</span><strong>LTV Calculation</strong></div>
+        <h2>Calculate LTV</h2>
+        <p class="prompt">A subscription app charges $12 per month. 
+Retention is: month 1: 100%, month 2: 50%, month 3: 30%. After month 3 
+users stop renewing. The app uses AI: one token costs $0.015, and an 
+active user spends 150 tokens per month.</p>
+        <p class="prompt">Calculate the net LTV of one acquired user. Show revenue, AI processing cost, and final LTV.</p>
+        <label class="field">Answer
+          <textarea name="question_6" required="" placeholder="Show your formula and final LTV"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-question-id="6">Send answer</button>
+          <span class="task-status" id="questionStatus6" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Topic 7</span><span class="pill">Question 7</span><strong>Key UE Question</strong></div>
+        <h2>Does the unit work?</h2>
+        <p class="prompt">Using your CAC from Question 7 and LTV from 
+Question 7, decide whether paid acquisition is economically healthy. 
+Explain your answer and name two levers that could improve the unit 
+economics.</p>
+        <label class="field">Answer
+          <textarea name="question_7" required="" placeholder="Compare LTV and CAC, then suggest improvements"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-question-id="7">Send answer</button>
+          <span class="task-status" id="questionStatus7" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Topic 8</span><span class="pill">Question 8</span><strong>John Peel</strong></div>
+        <h2>Break-even and target profit</h2>
+        <p class="prompt">John Peel has fixed monthly costs of £1,750. 
+Each roll contributes £7 after variable costs. How many rolls does he 
+need to sell to break even? How many rolls does he need to sell to earn 
+£100 profit in a month?</p>
+        <label class="field">Answer
+          <textarea name="question_8" required="" placeholder="Show both calculations"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-question-id="8">Send answer</button>
+          <span class="task-status" id="questionStatus8" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Topic 8</span><span class="pill">Question 9</span><strong>CalZen Case</strong></div>
+        <h2>CalZen insights</h2>
+        <p class="prompt">In the CalZen case, what did the sales funnel 
+quiz, CustDev result, and repeat-sale paradox show? Name one metric or 
+experiment you would use next to check whether CalZen's unit economics 
+can become healthy.</p>
+        <label class="field">Answer
+          <textarea name="question_9" required="" placeholder="Connect funnel, CustDev, repeat sales, and the next experiment"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-question-id="9">Send answer</button>
+          <span class="task-status" id="questionStatus9" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <div class="actions">
+        <div class="counter" id="counter">Answered: 0 of 9</div>
+        <div>
+          <button class="secondary" type="reset">Clear all</button>
+        </div>
+      </div>
+    </form>
+
+    <section class="result-box" id="resultBox" aria-live="polite">
+      <h2>Thank you, the answer has been collected</h2>
+      <p class="warning" id="offlineNotice">If sending does not work, copy the answer code and send it to the instructor.</p>
+      <textarea id="resultText" readonly="readonly"></textarea>
+      <div><button type="button" id="copyButton">Copy answer code</button></div>
+    </section>
+  </main>
+
+  <script>
+    const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycbwKgUSOet9lljk9vBWwtmxGU3TF9MqchGujj0c9qwWLGKpLQPOyPC94euapQ2MQm0LfRw/exec";
+    const questions = [
+      { id: 1, topic: "Product Manager Lens", title: "Product manager lens" },
+      { id: 2, topic: "Unit Economics Foundations", title: "Fixed and variable costs" },
+      { id: 3, topic: "Unit Economics Foundations", title: "Unit economics vocabulary" },
+      { id: 4, topic: "Where UE Came From", title: "Why unit economics matters" },
+      { id: 5, topic: "Calculating CAC and LTV", title: "Calculate CAC" },
+      { id: 6, topic: "Calculating CAC and LTV", title: "Calculate LTV" },
+      { id: 7, topic: "The Key Question of Unit Economics", title: "Does the unit work?" },
+      { id: 8, topic: "John Peel", title: "Break-even and target profit" },
+      { id: 9, topic: "CalZen Case", title: "CalZen insights" }
+    ];
+
+    const form = document.querySelector("#testForm");
+    const counter = document.querySelector("#counter");
+    const resultBox = document.querySelector("#resultBox");
+    const resultText = document.querySelector("#resultText");
+    const offlineNotice = document.querySelector("#offlineNotice");
+    const copyButton = document.querySelector("#copyButton");
+    const taskSubmitButtons = [...document.querySelectorAll(".task-submit")];
+
+    function collectData() {
+      const fd = new FormData(form);
+      return {
+        sheet: "test",
+        target_sheet: "test",
+        submitted_at: new Date().toISOString(),
+        telegram: String(fd.get("telegram") || "").trim(),
+        answers: questions.map((question) => ({
+          ...question,
+          answer: String(fd.get(`question_${question.id}`) || "").trim()
+        }))
+      };
+    }
+
+    function collectQuestionData(question) {
+      const fd = new FormData(form);
+      return {
+        sheet: "test",
+        target_sheet: "test",
+        submitted_at: new Date().toISOString(),
+        telegram: String(fd.get("telegram") || "").trim(),
+        answers: [{
+          ...question,
+          answer: String(fd.get(`question_${question.id}`) || "").trim()
+        }]
+      };
+    }
+
+    function endpointPayload(data) {
+      return {
+        sheet: "test",
+        target_sheet: "test",
+        submitted_at: data.submitted_at,
+        telegram: data.telegram,
+        comment: data.answers.map((answer) => `Question ${answer.id}: ${answer.answer}`).join("\n\n"),
+        topics: data.answers.map((answer) => ({
+          id: answer.id,
+          block: answer.topic,
+          title: `Question ${answer.id} · ${answer.title} · answer: ${answer.answer}`,
+          known: false,
+          interesting: Boolean(answer.answer)
+        }))
+      };
+    }
+
+    function updateCounter() {
+      const answered = collectData().answers.filter((answer) => answer.answer).length;
+      counter.textContent = `Answered: ${answered} of ${questions.length}`;
+    }
+
+    async function submitData(data) {
+      const body = new URLSearchParams();
+      body.set("payload", JSON.stringify(endpointPayload(data)));
+      await fetch(SUBMIT_ENDPOINT, { method: "POST", mode: "no-cors", body });
+      return { saved: true };
+    }
+
+    form.addEventListener("input", updateCounter);
+    form.addEventListener("reset", () => {
+      window.setTimeout(updateCounter, 0);
+      resultBox.classList.remove("active");
+      document.querySelectorAll(".task-status").forEach((status) => {
+        status.textContent = "";
+      });
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+    });
+
+    taskSubmitButtons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const question = questions.find((item) => item.id === Number(button.dataset.questionId));
+        const telegramInput = form.elements.telegram;
+        const answerInput = form.elements[`question_${question.id}`];
+        const status = document.querySelector(`#questionStatus${question.id}`);
+
+        if (!telegramInput.reportValidity() || !answerInput.reportValidity()) return;
+
+        const data = collectQuestionData(question);
+        resultText.value = JSON.stringify(data, null, 2);
+        button.disabled = true;
+        status.textContent = "Sending...";
+
+        try {
+          await submitData(data);
+          offlineNotice.hidden = true;
+          resultText.value = `Question ${question.id} answer sent. Thank you!`;
+          status.textContent = "Sent";
+        } catch (error) {
+          offlineNotice.hidden = false;
+          resultText.value = `${JSON.stringify(data, null, 2)}\n\n${error.message}`;
+          status.textContent = "Could not send";
+        } finally {
+          button.disabled = false;
+          updateCounter();
+          resultBox.classList.add("active");
+          resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+
+    copyButton.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(resultText.value);
+      copyButton.textContent = "Copied";
+      window.setTimeout(() => {
+        copyButton.textContent = "Copy answer code";
+      }, 1600);
+    });
+
+    updateCounter();
+  </script>
+
+
+<div style="all: initial; position: fixed !important; display: block !important; z-index: 2147483647 !important"></div></body></html>

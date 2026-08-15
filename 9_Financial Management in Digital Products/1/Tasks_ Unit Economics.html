@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="Tasks_%20Unit%20Economics_files/css2_XWk-.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tasks: Unit Economics</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #0b1622;
+      --navy: #192e40;
+      --navy-2: #20303d;
+      --orange: #ed561b;
+      --orange-strong: #c8430f;
+      --coral: #f2785c;
+      --soft: #fbe3d8;
+      --text: #182230;
+      --muted: #6b7785;
+      --muted-dark: #9fb0bf;
+      --line: #e7eaee;
+      --panel: #ffffff;
+      --bg: #f2f4f7;
+      --green: #2e8b57;
+      --warn-bg: #fff4ec;
+      --warn-text: #9a3b12;
+      --shadow: 0 16px 42px rgba(11, 22, 34, 0.10);
+      --ring: 0 0 0 3px rgba(237, 86, 27, 0.22);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Montserrat, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1100px 480px at 85% -8%, rgba(237, 86, 27, 0.06), transparent 60%),
+        var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---------- branded header ---------- */
+    header {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(820px 360px at 92% -40%, rgba(237, 86, 27, 0.20), transparent 62%),
+        linear-gradient(180deg, var(--navy-2), var(--navy));
+      color: #fff;
+      padding: 30px 18px 30px;
+    }
+
+    .wrap { width: min(1080px, calc(100% - 32px)); margin: 0 auto; }
+    header .wrap { position: relative; z-index: 2; }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 18px;
+      color: var(--muted-dark);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: color 140ms ease;
+    }
+    .back:hover { color: #fff; }
+
+    .tab {
+      display: block;
+      width: 46px;
+      height: 7px;
+      border-radius: 2px;
+      background: var(--orange);
+      margin-bottom: 16px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--coral);
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 4.6vw, 50px);
+      line-height: 1.04;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 16px 0 0;
+      color: #d6dee8;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .ghost {
+      position: absolute;
+      right: 2%;
+      top: 50%;
+      transform: translateY(-46%);
+      z-index: 1;
+      margin: 0;
+      font-size: clamp(150px, 26vw, 300px);
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.05);
+      letter-spacing: -0.04em;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    main { padding: 28px 0 56px; }
+    form { display: grid; gap: 16px; }
+
+    /* ---------- cards ---------- */
+    .section, .topic, .task, .question, .context-card, .result-box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+    .section, .result-box, .context-card { padding: 20px; }
+
+    .section { position: relative; }
+
+    /* ---------- inputs ---------- */
+    label, label.field {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    label.field, .student-grid { max-width: 440px; }
+    .student-grid { display: grid; grid-template-columns: minmax(220px, 440px); gap: 14px; }
+
+    input[type="text"], textarea {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 13px;
+      color: var(--text);
+      background: #fff;
+      font: inherit;
+      font-weight: 500;
+      transition: border-color 140ms ease, box-shadow 140ms ease;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+
+    input:focus, textarea:focus, button:focus-visible,
+    .check:focus-within, .option:focus-within {
+      outline: none;
+      border-color: var(--orange);
+      box-shadow: var(--ring);
+    }
+
+    .note {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      font-weight: 500;
+    }
+
+    /* ---------- pills / meta ---------- */
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eef1f5;
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    h2, .topic-title, .question h2, .result-title {
+      margin: 0;
+      font-weight: 800;
+      letter-spacing: -0.005em;
+      color: var(--text);
+    }
+
+    /* ---------- survey: topics ---------- */
+    .topics { display: grid; gap: 14px; }
+    .topic {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 18px;
+      padding: 18px;
+      align-items: center;
+      transition: border-color 140ms ease, transform 140ms ease;
+    }
+    .topic:hover { border-color: rgba(237, 86, 27, 0.4); transform: translateY(-1px); }
+    .topic .pill:first-child {
+      background: var(--navy);
+      color: #fff;
+      min-width: 28px;
+      justify-content: center;
+    }
+    .topic-title { font-size: 18px; line-height: 1.25; }
+    .content { margin: 9px 0 0; color: var(--muted); font-size: 14px; font-weight: 500; line-height: 1.5; }
+
+    .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .check {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--text);
+      background: #fff;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      user-select: none;
+      text-align: center;
+      transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
+    }
+    .check input, .option input { position: absolute; opacity: 0; pointer-events: none; }
+    .check:hover { border-color: rgba(237, 86, 27, 0.45); }
+    .check:has(input:checked) {
+      border-color: var(--orange);
+      color: var(--orange-strong);
+      background: var(--soft);
+    }
+
+    /* ---------- tasks ---------- */
+    .task { display: grid; gap: 14px; padding: 20px; }
+    .task-head, .question-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 800;
+    }
+    .task-head .pill, .question-head span {
+      border-radius: 999px;
+      background: #eef1f5;
+      padding: 4px 10px;
+    }
+    .task-head strong, .question-head strong { color: var(--orange-strong); letter-spacing: 0.02em; }
+    .task h2 { font-size: 22px; line-height: 1.18; }
+    .prompt { margin: 0; color: var(--muted); font-size: 15px; font-weight: 500; line-height: 1.55; }
+
+    .given { display: grid; gap: 8px; max-width: 560px; margin: 0; padding: 0; list-style: none; }
+    .given li {
+      display: flex; justify-content: space-between; gap: 16px;
+      padding: 11px 13px; border: 1px solid var(--line); border-radius: 10px;
+      background: #f8fafc; font-weight: 700; font-size: 14px;
+    }
+    .given span { color: var(--muted); font-weight: 800; }
+    .steps { display: grid; gap: 10px; max-width: 720px; margin: 0; padding-left: 22px; color: var(--muted); font-weight: 600; font-size: 14px; }
+
+    /* ---------- quiz ---------- */
+    .context-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .context-card { display: grid; gap: 12px; }
+    .question { padding: 18px; display: grid; gap: 13px; }
+    .question h2 { font-size: 21px; line-height: 1.2; }
+    .screen-grid { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; }
+    .screen-grid img {
+      max-width: min(100%, 360px); max-height: 560px; object-fit: contain;
+      border: 1px solid var(--line); border-radius: 12px; background: #fff;
+    }
+    .options { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+    .option {
+      position: relative; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; gap: 5px; min-height: 66px;
+      border: 1px solid var(--line); border-radius: 11px; padding: 8px;
+      text-align: center; cursor: pointer; font-size: 12.5px; font-weight: 700; color: var(--text);
+      transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
+    }
+    .option span {
+      color: #fff; background: var(--navy);
+      width: 24px; height: 24px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800;
+      transition: background 140ms ease;
+    }
+    .option:hover { border-color: rgba(237, 86, 27, 0.45); }
+    .option:has(input:checked) { border-color: var(--orange); background: var(--soft); color: var(--orange-strong); }
+    .option:has(input:checked) span { background: var(--orange); }
+
+    /* ---------- actions ---------- */
+    .actions {
+      position: sticky; bottom: 0;
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: space-between; align-items: center;
+      padding: 16px 0;
+      background: linear-gradient(180deg, rgba(242, 244, 247, 0), var(--bg) 30%);
+    }
+    .counter { color: var(--muted); font-size: 13.5px; font-weight: 800; }
+
+    button {
+      min-height: 46px; border: 0; border-radius: 10px; padding: 11px 20px;
+      color: #fff; background: var(--orange); font: inherit; font-weight: 800;
+      letter-spacing: 0.01em; cursor: pointer;
+      transition: background 140ms ease, transform 120ms ease;
+    }
+    button:hover { background: var(--orange-strong); }
+    button:active { transform: translateY(1px); }
+    button:disabled { cursor: wait; opacity: 0.72; }
+    button.secondary { color: var(--navy); background: #fff; border: 1px solid var(--line); }
+    button.secondary:hover { background: #f8fafc; border-color: rgba(237, 86, 27, 0.4); }
+    .task-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: -2px;
+    }
+    .task-status {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    /* ---------- result ---------- */
+    .result-box { display: none; margin-top: 18px; gap: 12px; }
+    .result-box.active { display: grid; }
+    .result-title { font-size: 21px; }
+    .result-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .warning {
+      margin: 0; padding: 11px 13px; border-radius: 10px;
+      color: var(--warn-text); background: var(--warn-bg);
+      border: 1px solid rgba(237, 86, 27, 0.18);
+      font-size: 13.5px; font-weight: 700;
+    }
+    #resultText { min-height: 120px; }
+
+    @media (max-width: 900px) {
+      .options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .context-grid { grid-template-columns: 1fr; }
+      .screen-grid img { max-width: 100%; }
+    }
+    @media (max-width: 760px) {
+      .student-grid, .topic, .checks { grid-template-columns: 1fr; }
+      .actions { position: static; }
+      .given li { display: grid; gap: 4px; }
+      .ghost { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="back" href="https://max-ppv.ru/lectures1-2/index.html">← All forms</a>
+      <span class="tab" aria-hidden="true"></span>
+      <p class="eyebrow">2026 Summer · Tasks</p>
+      <h1>Unit Economics Tasks</h1>
+      <p class="lead">Solve the tasks in free form. You may write formulas, intermediate calculations, and short explanations.</p>
+    </div>
+    <p class="ghost" aria-hidden="true">$</p>
+  </header>
+
+  <main class="wrap">
+    <form id="tasksForm">
+      <section class="section">
+        <label class="field">Telegram
+          <input name="telegram" type="text" autocomplete="username" placeholder="@username" required="">
+        </label>
+      </section>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Slide 35</span><span class="pill">Task 1</span><strong>Calculating CAC</strong></div>
+        <h2>Find the CAC</h2>
+        <p class="prompt">You are promoting a mobile app: an AI calorie tracker. To acquire users, you use Apple Search Ads.</p>
+        <p class="prompt">Your task is to calculate the cost of acquiring one paying customer (CAC) based on the advertising funnel data.</p>
+        <p class="prompt">Click-to-install conversion: 20%; cost per 
+click (CPC): $0.50; install-to-registration conversion: 50%; 
+registration-to-subscription conversion: 10%.</p>
+        <label class="field">Answer
+          <textarea name="task_1" required="" placeholder="Write your calculation and final CAC here"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-task-id="1">Send answer</button>
+          <span class="task-status" id="taskStatus1" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Slide 39</span><span class="pill">Task 2</span><strong>Calculating LTV</strong></div>
+        <h2>Find the LTV</h2>
+        <p class="prompt">The app earns revenue from subscriptions and uses AI to process user requests, which creates additional costs.</p>
+        <p class="prompt">Average subscription check: $10 per month. 
+Retention rate: month 1: 100%; month 2: 60% of users continue their 
+subscription; month 3: 40% of users continue their subscription.</p>
+        <p class="prompt">After month 3, users stop renewing their 
+subscription. The cost of one token for processing AI requests is $0.01.
+ The average number of tokens a user spends per month is 200 tokens.</p>
+        <label class="field">Answer
+          <textarea name="task_2" required="" placeholder="Write your LTV formula, assumptions, or calculation here"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-task-id="2">Send answer</button>
+          <span class="task-status" id="taskStatus2" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <article class="task">
+        <div class="task-head"><span class="pill">Over to you</span><span class="pill">Task 3</span><strong>Break-even</strong></div>
+        <h2>John Peel's rolls per month</h2>
+        <p class="prompt">How many rolls a month must John Peel sell to earn £100?</p>
+        <p class="prompt">Hint: cover the fixed £1,750, then the £100 profit, at £7 a roll.</p>
+        <label class="field">Answer
+          <textarea name="task_3" required="" placeholder="Write your calculation and final number of rolls here"></textarea>
+        </label>
+        <div class="task-actions">
+          <button type="button" class="task-submit" data-task-id="3">Send answer</button>
+          <span class="task-status" id="taskStatus3" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <div class="actions">
+        <div class="counter" id="counter">Answered: 0 of 3</div>
+        <div>
+          <button class="secondary" type="reset">Clear all</button>
+        </div>
+      </div>
+    </form>
+
+    <section class="result-box" id="resultBox" aria-live="polite">
+      <h2>Thank you, the answer has been collected</h2>
+      <p class="warning" id="offlineNotice">If sending does not work, copy the answer code and send it to the instructor.</p>
+      <textarea id="resultText" readonly="readonly"></textarea>
+      <div><button type="button" id="copyButton">Copy answer code</button></div>
+    </section>
+  </main>
+
+  <script>
+    const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycbwKgUSOet9lljk9vBWwtmxGU3TF9MqchGujj0c9qwWLGKpLQPOyPC94euapQ2MQm0LfRw/exec";
+    const tasks = [
+      { id: 1, slide: 35, title: "Find the CAC" },
+      { id: 2, slide: 39, title: "Find the LTV" },
+      { id: 3, slide: "Over to you", title: "John Peel's rolls per month" }
+    ];
+
+    const form = document.querySelector("#tasksForm");
+    const counter = document.querySelector("#counter");
+    const resultBox = document.querySelector("#resultBox");
+    const resultText = document.querySelector("#resultText");
+    const offlineNotice = document.querySelector("#offlineNotice");
+    const copyButton = document.querySelector("#copyButton");
+    const taskSubmitButtons = [...document.querySelectorAll(".task-submit")];
+
+    function collectData() {
+      const fd = new FormData(form);
+      return {
+        sheet: "tasks",
+        target_sheet: "tasks",
+        submitted_at: new Date().toISOString(),
+        telegram: String(fd.get("telegram") || "").trim(),
+        answers: tasks.map((task) => ({
+          ...task,
+          answer: String(fd.get(`task_${task.id}`) || "").trim()
+        }))
+      };
+    }
+
+    function collectTaskData(task) {
+      const fd = new FormData(form);
+      return {
+        sheet: "tasks",
+        target_sheet: "tasks",
+        submitted_at: new Date().toISOString(),
+        telegram: String(fd.get("telegram") || "").trim(),
+        answers: [{
+          ...task,
+          answer: String(fd.get(`task_${task.id}`) || "").trim()
+        }]
+      };
+    }
+
+    function endpointPayload(data) {
+      return {
+        sheet: "tasks",
+        target_sheet: "tasks",
+        submitted_at: data.submitted_at,
+        telegram: data.telegram,
+        comment: data.answers.map((answer) => `Task ${answer.id}: ${answer.answer}`).join("\n\n"),
+        topics: data.answers.map((answer) => ({
+          id: answer.id,
+          block: "Task",
+          title: `Slide ${answer.slide} · ${answer.title} · answer: ${answer.answer}`,
+          known: false,
+          interesting: Boolean(answer.answer)
+        }))
+      };
+    }
+
+    function updateCounter() {
+      const answered = collectData().answers.filter((answer) => answer.answer).length;
+      counter.textContent = `Answered: ${answered} of ${tasks.length}`;
+    }
+
+    async function submitData(data) {
+      const body = new URLSearchParams();
+      body.set("payload", JSON.stringify(endpointPayload(data)));
+      await fetch(SUBMIT_ENDPOINT, { method: "POST", mode: "no-cors", body });
+      return { saved: true };
+    }
+
+    form.addEventListener("input", updateCounter);
+    form.addEventListener("reset", () => {
+      window.setTimeout(updateCounter, 0);
+      resultBox.classList.remove("active");
+      document.querySelectorAll(".task-status").forEach((status) => {
+        status.textContent = "";
+      });
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+    });
+
+    taskSubmitButtons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const task = tasks.find((item) => item.id === Number(button.dataset.taskId));
+        const telegramInput = form.elements.telegram;
+        const answerInput = form.elements[`task_${task.id}`];
+        const status = document.querySelector(`#taskStatus${task.id}`);
+
+        if (!telegramInput.reportValidity() || !answerInput.reportValidity()) return;
+
+        const data = collectTaskData(task);
+        resultText.value = JSON.stringify(data, null, 2);
+        button.disabled = true;
+        status.textContent = "Sending...";
+
+        try {
+          await submitData(data);
+          offlineNotice.hidden = true;
+          resultText.value = `Task ${task.id} answer sent. Thank you!`;
+          status.textContent = "Sent";
+        } catch (error) {
+          offlineNotice.hidden = false;
+          resultText.value = `${JSON.stringify(data, null, 2)}\n\n${error.message}`;
+          status.textContent = "Could not send";
+        } finally {
+          button.disabled = false;
+          updateCounter();
+          resultBox.classList.add("active");
+          resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+
+    copyButton.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(resultText.value);
+      copyButton.textContent = "Copied";
+      window.setTimeout(() => {
+        copyButton.textContent = "Copy answer code";
+      }, 1600);
+    });
+
+    updateCounter();
+  </script>
+
+
+<div style="all: initial; position: fixed !important; display: block !important; z-index: 2147483647 !important"></div></body></html>

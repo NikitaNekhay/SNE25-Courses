@@ -1,0 +1,38 @@
+  PROMT
+  
+  Here in folder .html with 6 tasks you need to perform and maybe with my    
+  help. There is txt that you will use to install OWASP stuff. Try not       
+  keeping everything in memory avoid loops, try using less tokens as         
+  possible. Whilee you go, you stop me do screenshots and also you need to   
+  write a html report in text (write html file, take html file with tasks    
+  and its design and structure as an example, keep headers and stuff and     
+  below each task as a numberred list write steps of the work done) (write   
+  it as you complete a task: task done then description for a report for     
+  this task is done too), where later I will add screenshots. All code will  
+  be available via attachedd files, so there is no need to make screenshots  
+  of it. THe most important is to show success of step described in tasks.   
+  Try making less screenshots, ~4-5 maybe more for a task if possible avoid  
+  more, only importan. Write as "I did it" / "Was done following" from this  
+  perspective. I already have CI/CD gitlab running on docker also I have 2   
+  other VM with runnder and dev environement. All content of gitlab postfix  
+  nginx app runing on docker on de vmachine is present in                    
+  /home/nikita/Documents/cicdlab2: spa.. page with content of app with all   
+  configs; gitlab - gitlab folder which is runned on this vm on container,   
+  gitlab-postfix -- another container here with postfix for gitlub running.  
+  Gitlab is runed as root because these are all "lab" type tasks.
+  
+  
+  TASK 2
+  
+  1. Pipeline #16 — go to http://st19.sne.com/root/st19-repo/-/pipelines/16 —    
+  shows FAILED at secrets-scan, all other stages skipped
+  2. Secrets-scan job log — click on the failed secrets-scan job to see "leaks   
+  found: 1" and "SECRETS DETECTED"                                               
+  3. Pipeline #17 — http://st19.sne.com/root/st19-repo/-/pipelines/17 — shows all
+   stages passed                                                                 
+  4. CI/CD Variables — go to Settings > CI/CD > Variables — shows masked Docker  
+  Hub credentials
+
+
+
+

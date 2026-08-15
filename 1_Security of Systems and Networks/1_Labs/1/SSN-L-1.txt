@@ -1,0 +1,90 @@
+lab 1 topic - classical crypto
+
+Requierements for LABS
+
+Who did and what are responsibilities?
+
+Report is simple
+
+Don't copy paste! always rephrase
+
+On screens name of Linux machine should be seen.
+
+name+surname - is the name of response. pdf
+
+
+gramarrly - check grammar of report before 
+
+
+list of sources is obligatory
+
+
+TERMS TO ANSWER in report (know by heart):
+confusion
+diffusion
+permutation
+substitution
+vigenere syphers
+
+Rehearse about Enigma, know how to decrypt cypher.
+
+and so on
+Caesar cipher, vision... cipher
+
+
+
+1) 50 words and then exchange it with bro he cracks my text and i crack his with vigenere syphers text
+2) then use random cipher and exchange with bro and try cracking
+
+
+keymode repeat, standard vigenere cypher.
+
+key (14 letters) : ilovemountains
+
+Plain text (52 words):
+Hello my dear friend. We have not seen each other for so long. Years and years... A lot has changed. I have been twice in Antarctica, met your mother, stole your dog, returned the dog to you in a week. I won a Nobel Prize this year, maybe some day you too.
+
+
+Cipher text :
+Ztxqk ak jrhr xeqwcp. Ba vmbr uol fmwc qfyv azulr xbz kd xtju. Kknys sal qtmwo... O xug oak ppscsjz. W tgil bwrv lluha wz Gaaajpbarm, rah kuhy mggpwg, eykzq ebbr vbo, jtfznbqj goe vbo ld ktq wz g jlec. V egc m Skpqr Cyirr bzxe daod, snfbw fwet pfu maa gvo.
+
+
+Links:
+
+https://www.boxentriq.com/code-breaking/vigenere-cipher
+
+https://www.guballa.de/vigenere-solver - more detailed info
+
+
+TASK 2
+
+boxen - not properly
+
+
+
+Plain text (62 words, 335 chars):
+
+Sometimes I feel very weird: everything seems to be so unreal, words become longer, stretching; lines I see become nonlinear; fog comes into my view. Yesterday a guy that was shoot on Wederessa St. He was so thin, he reminded me about my first case in this bureau. Almost 2 decades and I am almost done. My body and mind are exhausted. 
+
+key (335)quadrowabrojabrobablomomblgomblzablbablnomblbomblpomblpomblklomboldombolwombolromboliombolwombombolgumombolhumosgomosdanosfanosyonostomoshotoshososhuesosospokolososgososhonomkonombomoshonokolohurosopanubokolimipisrisigidibgisdirosdfiweflksdfalerjbgfesnosadfopawefmzzmfqozqwepmzxcptyrbnmnzxcoiwernmdsfoiqwwnmqwokfalhvbzuzxcjmekaofmksuvd
+
+Cipher text 1:
+
+Iimhkwiet Z tnem mssy xpwdr: qwpxmfitmg tpfmt eb pq tz vbdfla, kasoh pqdzwp zaoupu, gfsseyvuou; wzbqt W dms nfqzis zpbxjbpgh; zoj tciet zbco np jjex. Jsehqsogm m hfx tilu wbd fvape pb Ifotfqtdp Gf. Ip glg ep hslb, tf fpiwzeso ds mccfb ak gwcoh obgq jb enym bxiswu. Bcaxsu 2 usdaepg mbp J ls oxnzrt ezoe. Nj ocpz lor yjys odf pmvmvddpr.
+
+
+Plain text 2 (62 words, 335 chars):
+
+Sometimes I feel very veird: everything seems to be so unreal, vords become longer, stretching; lines I see become nonlinear; fog comes into my viev. Yesterday a guy that vas shoot on Vederessa St. He vas so thin, he reminded me about my first case in this bureau. Almost 2 decades and I am almost done. My body and mind are exhausted.
+
+key (normal alphabet without w) ABCDEFGHIJKLMNOPQRSTUVXYZ
+
+Cipher text 2:
+
+78 59 56 39 77 48 77 60 78 48 44 39 47 56 96 60 77 78 75 39 56 67 58 60 86 39 66 78 77 47 68 79 56 68 38 39 65 68 89 80 46 39 67 59 83 58 87 60 45 56 75 59 75 38 88 57 49 37 58 57 47 56 79 79 56 39 66 68 77 67 59 90 47 47 47 58 54 56 68 79 49 68 47 68 47 39 56 60 47 59 56 39 66 59 78 77 58 58 38 35 75 45 79 67 47 59 56 39 76 48 78 90 69 57 77 76 56 39 96 99 49 68 68 39 75 38 55 99 45 46 74 78 77 47 55 90 86 35 67 68 55 59 79 90 69 58 75 39 46 39 87 60 78 68 34 68 77 47 59 97 45 68 67 59 77 47 68 79 57 39 66 39 65 48 78 59 49 38 56 39 43 36 79 96 79 57 77 45 56 67 88 90 47 35 67 39 56 58 89 68 58 68 35 75 75 39 55 96 45 56 56 59 76 69 58 60 47 35 37 39 76 35 78 59 58 35 56 35 64 57 79 89 79 38 58 58 47 57 98 57 69 38 77 35 66 38 77 69 68 38 34 67 47 39 97 68 45 75 67 69 47 38
+
+
+
+
+
+

@@ -1,0 +1,7 @@
+# environment variables:
+AFL_CUSTOM_INFO_PROGRAM=./data_test_asan
+AFL_CUSTOM_INFO_PROGRAM_ARGV=@@
+AFL_CUSTOM_INFO_OUT=output_data/default
+AFL_USE_ASAN=1
+# command line:
+'afl-fuzz' '-i' 'input' '-o' 'output_data' '-m' 'none' './data_test_asan' '@@'

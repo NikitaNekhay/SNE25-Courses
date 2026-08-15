@@ -1,0 +1,99 @@
+stages:
+  - build
+  - test
+  - docker-build
+  - docker-push
+  - deploy
+
+variables:
+  DOCKER_IMAGE_NAME: "nikitanekhay/st19-spa"
+  DOCKER_IMAGE_TAG: "${CI_COMMIT_SHORT_SHA}"
+
+# CI Stage 1: Build the application
+build-app:
+  stage: build
+  tags:
+    - st19-runner
+  script:
+    - echo "Building the application..."
+    - ls -la
+    - echo "Build completed successfully"
+  artifacts:
+    paths:
+      - .  # Save all files for next stages
+    expire_in: 1 hour
+
+# CI Stage 2: Run tests
+test-app:
+  stage: test
+  tags:
+    - st19-runner
+  dependencies:
+    - build-app
+  script:
+    - echo "Running application tests..."
+    # Add your actual test commands here
+    # For npm projects:
+    # - npm test
+    # For simple validation:
+    - test -f index.html && echo "index.html exists - OK"
+    - echo "All tests passed!"
+
+# CI Stage 3: Build Docker image
+build-docker:
+  stage: docker-build
+  tags:
+    - st19-runner
+  dependencies:
+    - build-app
+  script:
+    - echo "Building Docker image..."
+    - docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} .
+    - docker build -t ${DOCKER_IMAGE_NAME}:latest .
+    - echo "Docker image built successfully"
+    - docker images | grep st19-spa
+
+# CI Stage 4: Push to Docker Hub
+push-docker:
+  stage: docker-push
+  tags:
+    - st19-runner
+  dependencies:
+    - build-docker
+  script:
+    - echo "Logging into Docker Hub..."
+    - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+    - echo "Pushing Docker image to Docker Hub..."
+    - docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+    - docker push ${DOCKER_IMAGE_NAME}:latest
+    - echo "Docker image pushed successfully"
+    - docker logout
+
+# CD Stage 1: Deploy to deployment server
+deploy-app:
+  stage: deploy
+  tags:
+    - st19-runner
+  dependencies: []
+  script:
+    - echo "Deploying to VM3 (Deployment Server)..."
+    
+    # Stop and remove old container if exists
+    - ssh deploy-server "docker stop st19-spa || true"
+    - ssh deploy-server "docker rm st19-spa || true"
+    
+    # Pull latest image
+    - echo "Pulling Docker image on deployment server..."
+    - ssh deploy-server "docker pull ${DOCKER_IMAGE_NAME}:latest"
+    
+    # Run new container
+    - echo "Starting new container..."
+    - ssh deploy-server "docker run -d --name st19-spa -p 8080:80 ${DOCKER_IMAGE_NAME}:latest"
+    
+    # Verify deployment
+    - echo "Verifying deployment..."
+    - ssh deploy-server "docker ps | grep st19-spa"
+    - echo "Deployment completed successfully!"
+    - echo "Access the application at: http://deploy.st19.sne.com:8080"
+  only:
+    - main

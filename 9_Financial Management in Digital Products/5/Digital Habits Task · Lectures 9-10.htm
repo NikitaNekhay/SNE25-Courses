@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="Digital%20Habits%20Task%20%C2%B7%20Lectures%209-10_files/css2_i0Rg.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Digital Habits Task · Lectures 9-10</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #0b1622;
+      --navy: #192e40;
+      --navy-2: #20303d;
+      --orange: #ed561b;
+      --orange-strong: #c8430f;
+      --coral: #f2785c;
+      --text: #182230;
+      --muted: #6b7785;
+      --muted-dark: #9fb0bf;
+      --line: #e7eaee;
+      --panel: #ffffff;
+      --bg: #f2f4f7;
+      --soft: #fff4ec;
+      --shadow: 0 16px 42px rgba(11, 22, 34, 0.10);
+      --ring: 0 0 0 3px rgba(237, 86, 27, 0.22);
+      --green: #2e8b57;
+      --warn-bg: #fff4ec;
+      --warn-text: #9a3b12;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Montserrat, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1100px 480px at 85% -8%, rgba(237, 86, 27, 0.06), transparent 60%),
+        var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(820px 360px at 92% -40%, rgba(237, 86, 27, 0.20), transparent 62%),
+        linear-gradient(180deg, var(--navy-2), var(--navy));
+      color: #fff;
+      padding: 30px 18px 42px;
+    }
+
+    .wrap {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header .wrap {
+      position: relative;
+      z-index: 2;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 18px;
+      color: var(--muted-dark);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: color 140ms ease;
+    }
+
+    .back:hover,
+    .back:focus-visible {
+      color: #fff;
+      outline: none;
+    }
+
+    .tab {
+      display: block;
+      width: 46px;
+      height: 7px;
+      border-radius: 2px;
+      background: var(--orange);
+      margin-bottom: 16px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--coral);
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 4.8vw, 54px);
+      line-height: 1.04;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 820px;
+      margin: 16px 0 0;
+      color: #d6dee8;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .ghost {
+      position: absolute;
+      right: 2%;
+      top: 50%;
+      transform: translateY(-46%);
+      z-index: 1;
+      margin: 0;
+      font-size: clamp(110px, 18vw, 230px);
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.05);
+      letter-spacing: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    main { padding: 28px 0 56px; }
+
+    form {
+      display: grid;
+      gap: 18px;
+    }
+
+    .intro-card,
+    .student-card,
+    .task-card,
+    .result-box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .intro-card,
+    .student-card,
+    .task-card,
+    .result-box { padding: 20px; }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .metric {
+      min-height: 92px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fbfcfd;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 8px;
+      color: var(--navy);
+      font-size: 20px;
+      line-height: 1.15;
+      font-weight: 800;
+    }
+
+    .label {
+      display: inline-flex;
+      margin-bottom: 8px;
+      color: var(--orange-strong);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .task-card {
+      display: grid;
+      gap: 16px;
+    }
+
+    .task-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      flex: none;
+      border-radius: 11px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .formula {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(237, 86, 27, 0.20);
+      background: var(--soft);
+      color: var(--navy);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .formula code {
+      white-space: normal;
+      color: var(--orange-strong);
+      font: inherit;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding-left: 19px;
+      color: var(--muted);
+      font-size: 14.5px;
+      font-weight: 500;
+    }
+
+    .calc-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fbfcfd;
+    }
+
+    .calc-table th,
+    .calc-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .calc-table th {
+      color: var(--muted);
+      background: #eef2f6;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .calc-table tr:last-child td { border-bottom: 0; }
+    .calc-table td:not(:first-child), .calc-table th:not(:first-child) { text-align: right; }
+
+    label.field {
+      display: grid;
+      gap: 8px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .student-grid {
+      display: grid;
+      grid-template-columns: minmax(220px, 360px);
+      gap: 14px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 13px;
+      color: var(--text);
+      background: #fff;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    input {
+      min-height: 44px;
+    }
+
+    .calc-table input {
+      min-width: 120px;
+      text-align: right;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    input:focus,
+    textarea:focus,
+    button:focus-visible {
+      border-color: rgba(237, 86, 27, 0.65);
+      box-shadow: var(--ring);
+      outline: none;
+    }
+
+    .question-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .actions {
+      position: sticky;
+      bottom: 0;
+      z-index: 4;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.90);
+      box-shadow: 0 -10px 34px rgba(11, 22, 34, 0.08);
+      backdrop-filter: blur(10px);
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 10px;
+      border: 1px solid var(--orange);
+      color: #fff;
+      background: var(--orange);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    button:hover,
+    button:focus-visible,
+    .button:hover,
+    .button:focus-visible {
+      background: var(--orange-strong);
+      border-color: var(--orange-strong);
+      box-shadow: var(--ring);
+      outline: none;
+    }
+
+    button.secondary,
+    .button.secondary {
+      color: var(--navy);
+      background: #fff;
+      border-color: var(--line);
+    }
+
+    button.secondary:hover,
+    button.secondary:focus-visible,
+    .button.secondary:hover,
+    .button.secondary:focus-visible {
+      color: var(--orange-strong);
+      background: #fff;
+      border-color: rgba(237, 86, 27, 0.45);
+    }
+
+    button:disabled {
+      cursor: progress;
+      opacity: 0.72;
+    }
+
+    .submit-status,
+    .counter {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .result-box {
+      display: none;
+      margin-top: 18px;
+    }
+
+    .result-box.active { display: block; }
+
+    .result-box p {
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .warning {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--warn-bg);
+      color: var(--warn-text);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    footer {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 22px 0 30px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 860px) {
+      .intro-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .actions { position: static; }
+      .ghost { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      header { padding-bottom: 34px; }
+      .intro-grid { grid-template-columns: 1fr; }
+      .calc-table { display: block; overflow-x: auto; }
+      .button-row, .button-row button, .button-row .button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="back" href="https://max-ppv.ru/index9-10.html">← Back to Lectures 9-10</a>
+      <span class="tab" aria-hidden="true"></span>
+      <p class="eyebrow">Digital Habits · Valuation Task</p>
+      <h1>Оценка компании через мультипликаторы</h1>
+      <p class="lead">Заполните расчеты по кейсу Digital Habits: Equity Value, Net Debt, Enterprise Value, P/S, P/E, EV/Sales и EV/EBITDA.</p>
+    </div>
+    <p class="ghost" aria-hidden="true">EV</p>
+  </header>
+
+  <main class="wrap">
+    <form id="digitalHabitsForm">
+      <section class="intro-card">
+        <span class="label">Исходная точка</span>
+        <h2>Pre-IPO оценка</h2>
+        <p>Для post-money оценки используйте цену размещения и 
+количество акций после привлечения денег. Остальные показатели возьмите 
+из финансовой отчетности / слайдов и внесите в таблицы ниже.</p>
+        <div class="intro-grid" aria-label="Ключевые вводные">
+          <div class="metric"><span>Price per share</span><strong>30 ₽</strong></div>
+          <div class="metric"><span>Number of shares</span><strong>180 млн</strong></div>
+          <div class="metric"><span>Equity Value</span><strong>5,4 млрд ₽</strong></div>
+          <div class="metric"><span>Years</span><strong>2024 / 2025</strong></div>
+        </div>
+      </section>
+
+      <section class="student-card">
+        <div class="student-grid">
+          <label class="field">Alias
+            <input name="alias" type="text" autocomplete="nickname" required="" placeholder="@telegram or nickname">
+          </label>
+        </div>
+      </section>
+
+      <article class="task-card">
+        <div class="task-head">
+          <span class="num">1</span>
+          <h2>Рассчитать чистый долг</h2>
+        </div>
+        <div class="formula"><code>Net Debt = Debt − Cash</code></div>
+        <table class="calc-table">
+          <thead><tr><th>Показатель</th><th>2024</th><th>2025</th></tr></thead>
+          <tbody>
+            <tr><td>Долг</td><td><input name="t1_debt_2024" type="text" required=""></td><td><input name="t1_debt_2025" type="text" required=""></td></tr>
+            <tr><td>Денежные средства</td><td><input name="t1_cash_2024" type="text" required=""></td><td><input name="t1_cash_2025" type="text" required=""></td></tr>
+            <tr><td>Чистый долг</td><td><input name="t1_net_debt_2024" type="text" required=""></td><td><input name="t1_net_debt_2025" type="text" required=""></td></tr>
+          </tbody>
+        </table>
+        <label class="field">Почему при оценке бизнеса важно использовать не только долг, но и денежные средства?
+          <textarea name="t1_answer" required=""></textarea>
+        </label>
+      </article>
+
+      <article class="task-card">
+        <div class="task-head">
+          <span class="num">2</span>
+          <h2>Рассчитать Enterprise Value</h2>
+        </div>
+        <div class="formula"><code>EV = Equity Value + Net Debt</code></div>
+        <table class="calc-table">
+          <thead><tr><th>Показатель</th><th>2024</th><th>2025</th></tr></thead>
+          <tbody>
+            <tr><td>Equity Value</td><td>5,4 млрд ₽</td><td>5,4 млрд ₽</td></tr>
+            <tr><td>Net Debt</td><td><input name="t2_net_debt_2024" type="text" required=""></td><td><input name="t2_net_debt_2025" type="text" required=""></td></tr>
+            <tr><td>Enterprise Value</td><td><input name="t2_ev_2024" type="text" required=""></td><td><input name="t2_ev_2025" type="text" required=""></td></tr>
+          </tbody>
+        </table>
+        <label class="field">Чем Enterprise Value отличается от Equity Value?
+          <textarea name="t2_answer" required=""></textarea>
+        </label>
+      </article>
+
+      <article class="task-card">
+        <div class="task-head">
+          <span class="num">3</span>
+          <h2>Рассчитать P/S</h2>
+        </div>
+        <div class="formula"><code>P/S = Equity Value / Revenue</code></div>
+        <table class="calc-table">
+          <thead><tr><th>Показатель</th><th>2024</th><th>2025</th></tr></thead>
+          <tbody>
+            <tr><td>Equity Value</td><td>5,4 млрд ₽</td><td>5,4 млрд ₽</td></tr>
+            <tr><td>Выручка</td><td><input name="t3_revenue_2024" type="text" required=""></td><td><input name="t3_revenue_2025" type="text" required=""></td></tr>
+            <tr><td>P/S</td><td><input name="t3_ps_2024" type="text" required=""></td><td><input name="t3_ps_2025" type="text" required=""></td></tr>
+          </tbody>
+        </table>
+        <div class="question-grid">
+          <label class="field">Сколько инвестор платит за 1 рубль выручки компании?<textarea name="t3_answer_1" required=""></textarea></label>
+          <label class="field">Почему P/S снизился в 2025 году, если цена компании осталась такой же?<textarea name="t3_answer_2" required=""></textarea></label>
+          <label class="field">Можно ли по одному P/S понять, дорогая компания или дешевая?<textarea name="t3_answer_3" required=""></textarea></label>
+        </div>
+      </article>
+
+      <article class="task-card">
+        <div class="task-head">
+          <span class="num">4</span>
+          <h2>Рассчитать P/E</h2>
+        </div>
+        <div class="formula"><code>P/E = Equity Value / Net Income</code></div>
+        <table class="calc-table">
+          <thead><tr><th>Показатель</th><th>2024</th><th>2025</th></tr></thead>
+          <tbody>
+            <tr><td>Equity Value</td><td>5,4 млрд ₽</td><td>5,4 млрд ₽</td></tr>
+            <tr><td>Чистая прибыль</td><td><input name="t4_net_income_2024" type="text" required=""></td><td><input name="t4_net_income_2025" type="text" required=""></td></tr>
+            <tr><td>P/E</td><td><input name="t4_pe_2024" type="text" required=""></td><td><input name="t4_pe_2025" type="text" required=""></td></tr>
+          </tbody>
+        </table>
+        <div class="question-grid">
+          <label class="field">Сколько годовых прибылей инвестор платит за компанию?<textarea name="t4_answer_1" required=""></textarea></label>
+          <label class="field">Почему P/E резко снизился с 2024 к 2025 году?<textarea name="t4_answer_2" required=""></textarea></label>
+          <label class="field">Что может быть опасного в выводе «низкий P/E = компания дешевая»?<textarea name="t4_answer_3" required=""></textarea></label>
+        </div>
+      </article>
+
+      <article class="task-card">
+        <div class="task-head">
+          <span class="num">5</span>
+          <h2>Рассчитать EV/Sales</h2>
+        </div>
+        <div class="formula"><code>EV/Sales = Enterprise Value / Revenue</code></div>
+        <table class="calc-table">
+          <thead><tr><th>Показатель</th><th>2024</th><th>2025</th></tr></thead>
+          <tbody>
+            <tr><td>Enterprise Value</td><td><input name="t5_ev_2024" type="text" required=""></td><td><input name="t5_ev_2025" type="text" required=""></td></tr>
+            <tr><td>Выручка</td><td><input name="t5_revenue_2024" type="text" required=""></td><td><input name="t5_revenue_2025" type="text" required=""></td></tr>
+            <tr><td>EV/Sales</td><td><input name="t5_ev_sales_2024" type="text" required=""></td><td><input name="t5_ev_sales_2025" type="text" required=""></td></tr>
+          </tbody>
+        </table>
+        <label class="field">Чем EV/Sales отличается от P/S и почему EV/Sales учитывает структуру капитала компании лучше?
+          <textarea name="t5_answer" required=""></textarea>
+        </label>
+      </article>
+
+      <article class="task-card">
+        <div class="task-head">
+          <span class="num">6</span>
+          <h2>Рассчитать EV/EBITDA</h2>
+        </div>
+        <div class="formula"><code>EV/EBITDA = Enterprise Value / EBITDA</code></div>
+        <table class="calc-table">
+          <thead><tr><th>Показатель</th><th>2024</th><th>2025</th></tr></thead>
+          <tbody>
+            <tr><td>Enterprise Value</td><td><input name="t6_ev_2024" type="text" required=""></td><td><input name="t6_ev_2025" type="text" required=""></td></tr>
+            <tr><td>EBITDA</td><td><input name="t6_ebitda_2024" type="text" required=""></td><td><input name="t6_ebitda_2025" type="text" required=""></td></tr>
+            <tr><td>EV/EBITDA</td><td><input name="t6_ev_ebitda_2024" type="text" required=""></td><td><input name="t6_ev_ebitda_2025" type="text" required=""></td></tr>
+          </tbody>
+        </table>
+        <label class="field">Сколько годовых EBITDA инвестор платит за бизнес?
+          <textarea name="t6_answer" required=""></textarea>
+        </label>
+      </article>
+
+      <article class="task-card">
+        <div class="task-head">
+          <span class="num">7</span>
+          <h2>Рассчитать Net Debt / EBITDA</h2>
+        </div>
+        <p>Рассчитайте долговую нагрузку компании.</p>
+        <div class="formula"><code>Net Debt / EBITDA = Net Debt / EBITDA</code></div>
+        <table class="calc-table">
+          <thead><tr><th>Показатель</th><th>2024</th><th>2025</th></tr></thead>
+          <tbody>
+            <tr><td>Net Debt</td><td><input name="t7_net_debt_2024" type="text" required=""></td><td><input name="t7_net_debt_2025" type="text" required=""></td></tr>
+            <tr><td>EBITDA</td><td><input name="t7_ebitda_2024" type="text" required=""></td><td><input name="t7_ebitda_2025" type="text" required=""></td></tr>
+            <tr><td>Net Debt / EBITDA</td><td><input name="t7_net_debt_ebitda_2024" type="text" required=""></td><td><input name="t7_net_debt_ebitda_2025" type="text" required=""></td></tr>
+          </tbody>
+        </table>
+        <div class="question-grid">
+          <label class="field">Высокая или низкая долговая нагрузка у компании?<textarea name="t7_answer_1" required=""></textarea></label>
+          <label class="field">Стала ли долговая нагрузка лучше или хуже в 2025 году?<textarea name="t7_answer_2" required=""></textarea></label>
+          <label class="field">Почему рост долга сам по себе не всегда плохой сигнал?<textarea name="t7_answer_3" required=""></textarea></label>
+        </div>
+      </article>
+
+      <article class="task-card">
+        <div class="task-head">
+          <span class="num">8</span>
+          <h2>Рассчитать маржинальность бизнеса</h2>
+        </div>
+        <p>Рассчитайте две маржи: EBITDA margin и Net Profit margin.</p>
+        <div class="formula"><code>EBITDA margin = EBITDA / Revenue</code><code>Net Profit margin = Net Income / Revenue</code></div>
+        <table class="calc-table">
+          <thead><tr><th>Показатель</th><th>2024</th><th>2025</th></tr></thead>
+          <tbody>
+            <tr><td>Выручка</td><td><input name="t8_revenue_2024" type="text" required=""></td><td><input name="t8_revenue_2025" type="text" required=""></td></tr>
+            <tr><td>EBITDA</td><td><input name="t8_ebitda_2024" type="text" required=""></td><td><input name="t8_ebitda_2025" type="text" required=""></td></tr>
+            <tr><td>Чистая прибыль</td><td><input name="t8_net_income_2024" type="text" required=""></td><td><input name="t8_net_income_2025" type="text" required=""></td></tr>
+            <tr><td>EBITDA margin</td><td><input name="t8_ebitda_margin_2024" type="text" required=""></td><td><input name="t8_ebitda_margin_2025" type="text" required=""></td></tr>
+            <tr><td>Net Profit margin</td><td><input name="t8_net_profit_margin_2024" type="text" required=""></td><td><input name="t8_net_profit_margin_2025" type="text" required=""></td></tr>
+          </tbody>
+        </table>
+        <div class="question-grid">
+          <label class="field">Насколько маржинален бизнес компании?<textarea name="t8_answer_1" required=""></textarea></label>
+          <label class="field">Как изменилась маржинальность с 2024 к 2025 году?<textarea name="t8_answer_2" required=""></textarea></label>
+          <label class="field">Что нужно проверить, прежде чем считать такую маржинальность устойчивой?<textarea name="t8_answer_3" required=""></textarea></label>
+        </div>
+      </article>
+
+      <article class="task-card">
+        <div class="task-head">
+          <span class="num">9</span>
+          <h2>Рассчитать рост бизнеса</h2>
+        </div>
+        <p>Рассчитайте рост основных финансовых показателей с 2024 к 2025 году.</p>
+        <div class="formula"><code>Growth = 2025 value / 2024 value − 1</code></div>
+        <table class="calc-table">
+          <thead><tr><th>Показатель</th><th>2024</th><th>2025</th><th>Рост</th></tr></thead>
+          <tbody>
+            <tr><td>Выручка</td><td><input name="t9_revenue_2024" type="text" required=""></td><td><input name="t9_revenue_2025" type="text" required=""></td><td><input name="t9_revenue_growth" type="text" required=""></td></tr>
+            <tr><td>EBITDA</td><td><input name="t9_ebitda_2024" type="text" required=""></td><td><input name="t9_ebitda_2025" type="text" required=""></td><td><input name="t9_ebitda_growth" type="text" required=""></td></tr>
+            <tr><td>Чистая прибыль</td><td><input name="t9_net_income_2024" type="text" required=""></td><td><input name="t9_net_income_2025" type="text" required=""></td><td><input name="t9_net_income_growth" type="text" required=""></td></tr>
+          </tbody>
+        </table>
+        <div class="question-grid">
+          <label class="field">Что растет быстрее: выручка, EBITDA или чистая прибыль?<textarea name="t9_answer_1" required=""></textarea></label>
+          <label class="field">Что это говорит об операционном рычаге?<textarea name="t9_answer_2" required=""></textarea></label>
+          <label class="field">Может ли такой темп роста сохраняться долго?<textarea name="t9_answer_3" required=""></textarea></label>
+        </div>
+      </article>
+
+      <article class="task-card">
+        <div class="task-head">
+          <span class="num">10</span>
+          <h2>Сравнить мультипликаторы 2024 и 2025</h2>
+        </div>
+        <p>Соберите итоговую таблицу мультипликаторов и интерпретируйте изменение.</p>
+        <table class="calc-table">
+          <thead><tr><th>Мультипликатор</th><th>2024</th><th>2025</th><th>Интерпретация изменения</th></tr></thead>
+          <tbody>
+            <tr><td>P/S</td><td><input name="t10_ps_2024" type="text" required=""></td><td><input name="t10_ps_2025" type="text" required=""></td><td><input name="t10_ps_interpretation" type="text" required=""></td></tr>
+            <tr><td>P/E</td><td><input name="t10_pe_2024" type="text" required=""></td><td><input name="t10_pe_2025" type="text" required=""></td><td><input name="t10_pe_interpretation" type="text" required=""></td></tr>
+            <tr><td>EV/Sales</td><td><input name="t10_ev_sales_2024" type="text" required=""></td><td><input name="t10_ev_sales_2025" type="text" required=""></td><td><input name="t10_ev_sales_interpretation" type="text" required=""></td></tr>
+            <tr><td>EV/EBITDA</td><td><input name="t10_ev_ebitda_2024" type="text" required=""></td><td><input name="t10_ev_ebitda_2025" type="text" required=""></td><td><input name="t10_ev_ebitda_interpretation" type="text" required=""></td></tr>
+            <tr><td>Net Debt / EBITDA</td><td><input name="t10_net_debt_ebitda_2024" type="text" required=""></td><td><input name="t10_net_debt_ebitda_2025" type="text" required=""></td><td><input name="t10_net_debt_ebitda_interpretation" type="text" required=""></td></tr>
+            <tr><td>EBITDA margin</td><td><input name="t10_ebitda_margin_2024" type="text" required=""></td><td><input name="t10_ebitda_margin_2025" type="text" required=""></td><td><input name="t10_ebitda_margin_interpretation" type="text" required=""></td></tr>
+            <tr><td>Net Profit margin</td><td><input name="t10_net_profit_margin_2024" type="text" required=""></td><td><input name="t10_net_profit_margin_2025" type="text" required=""></td><td><input name="t10_net_profit_margin_interpretation" type="text" required=""></td></tr>
+          </tbody>
+        </table>
+        <div class="question-grid">
+          <label class="field">По каким мультипликаторам компания стала выглядеть дешевле в 2025 году?<textarea name="t10_answer_1" required=""></textarea></label>
+          <label class="field">Это произошло из-за снижения оценки компании или из-за роста финансовых показателей?<textarea name="t10_answer_2" required=""></textarea></label>
+          <label class="field">Какой мультипликатор кажется наиболее информативным для этой компании?<textarea name="t10_answer_3" required=""></textarea></label>
+        </div>
+      </article>
+
+      <article class="task-card">
+        <div class="task-head">
+          <span class="num">11</span>
+          <h2>Написать короткий инвестиционный вывод</h2>
+        </div>
+        <p>Формат: 150-250 слов. Ответьте, выглядит ли оценка 5,4 млрд ₽
+ высокой, низкой или справедливой относительно финансовых результатов 
+2024 и 2025 годов.</p>
+        <label class="field">Инвестиционный вывод
+          <textarea name="t11_investment_conclusion" id="investmentConclusion" required="" placeholder="150-250 слов"></textarea>
+        </label>
+      </article>
+
+      <div class="actions">
+        <span class="counter" id="counter">Ответы: 0/100</span>
+        <div class="button-row">
+          <button type="submit" id="submitButton">Send answer</button>
+          <button class="secondary" type="reset">Clear all</button>
+          <span class="submit-status" id="submitStatus" aria-live="polite"></span>
+        </div>
+      </div>
+    </form>
+
+    <section class="result-box" id="resultBox" aria-live="polite">
+      <p id="resultMessage">Ответ отправлен. Спасибо!</p>
+      <div class="warning" id="offlineNotice" hidden="">Если отправка не сработала, скопируйте текст формы и отправьте преподавателю.</div>
+    </section>
+  </main>
+
+  <footer>Max Popov · Financial Management in Digital Products · Innopolis University</footer>
+
+  <script>
+    const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycbwKgUSOet9lljk9vBWwtmxGU3TF9MqchGujj0c9qwWLGKpLQPOyPC94euapQ2MQm0LfRw/exec";
+    const form = document.querySelector("#digitalHabitsForm");
+    const counter = document.querySelector("#counter");
+    const resultBox = document.querySelector("#resultBox");
+    const resultMessage = document.querySelector("#resultMessage");
+    const offlineNotice = document.querySelector("#offlineNotice");
+    const submitButton = document.querySelector("#submitButton");
+    const submitStatus = document.querySelector("#submitStatus");
+
+    const taskTitles = {
+      1: "Net Debt",
+      2: "Enterprise Value",
+      3: "P/S",
+      4: "P/E",
+      5: "EV/Sales",
+      6: "EV/EBITDA",
+      7: "Net Debt / EBITDA",
+      8: "Margins",
+      9: "Growth",
+      10: "Multiples comparison",
+      11: "Investment conclusion"
+    };
+
+    function fieldValue(fd, name) {
+      return String(fd.get(name) || "").trim();
+    }
+
+    function collectData() {
+      const fd = new FormData(form);
+      const values = {};
+      for (const [key, value] of fd.entries()) {
+        values[key] = String(value || "").trim();
+      }
+
+      return {
+        sheet: "digital_habits",
+        target_sheet: "digital_habits",
+        submitted_at: new Date().toISOString(),
+        alias: fieldValue(fd, "alias"),
+        assignment: "Lectures 9-10 Digital Habits valuation task",
+        values
+      };
+    }
+
+    function taskSummary(values, taskNumber) {
+      const prefix = `t${taskNumber}_`;
+      const rows = Object.entries(values)
+        .filter(([key]) => key.startsWith(prefix))
+        .map(([key, value]) => `${key}: ${value || "—"}`);
+      return rows.join("; ");
+    }
+
+    function endpointPayload(data) {
+      return {
+        sheet: "digital_habits",
+        target_sheet: "digital_habits",
+        submitted_at: data.submitted_at,
+        telegram: data.alias,
+        comment: JSON.stringify(data.values),
+        topics: Object.keys(taskTitles).map((taskNumber) => ({
+          id: Number(taskNumber),
+          block: "Digital Habits",
+          title: `${taskTitles[taskNumber]} · ${taskSummary(data.values, taskNumber)}`,
+          known: true,
+          interesting: true
+        }))
+      };
+    }
+
+    function updateCounter() {
+      const data = collectData();
+      const filled = Object.values(data.values).filter(Boolean).length;
+      const total = Object.keys(data.values).length;
+      counter.textContent = `Ответы: ${filled}/${total}`;
+    }
+
+    function wordCount(text) {
+      return String(text || "").trim().split(/\s+/).filter(Boolean).length;
+    }
+
+    function validateInvestmentConclusion() {
+      const field = document.querySelector("#investmentConclusion");
+      const words = wordCount(field.value);
+      if (words < 150 || words > 250) {
+        field.setCustomValidity(`Инвестиционный вывод должен быть 150-250 слов. Сейчас: ${words}.`);
+      } else {
+        field.setCustomValidity("");
+      }
+    }
+
+    async function submitData(data) {
+      const body = new URLSearchParams();
+      body.set("payload", JSON.stringify(endpointPayload(data)));
+      await fetch(SUBMIT_ENDPOINT, { method: "POST", mode: "no-cors", body });
+      return { saved: true };
+    }
+
+    form.addEventListener("input", updateCounter);
+    form.addEventListener("input", validateInvestmentConclusion);
+
+    form.addEventListener("reset", () => {
+      window.setTimeout(updateCounter, 0);
+      submitStatus.textContent = "";
+      resultBox.classList.remove("active");
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      validateInvestmentConclusion();
+      if (!form.reportValidity()) return;
+
+      const data = collectData();
+      submitButton.disabled = true;
+      submitStatus.textContent = "Sending...";
+
+      try {
+        await submitData(data);
+        resultMessage.textContent = "Ответ отправлен. Спасибо!";
+        offlineNotice.hidden = true;
+        submitStatus.textContent = "Sent";
+      } catch (error) {
+        resultMessage.textContent = "Не удалось отправить ответ. Попробуйте еще раз.";
+        offlineNotice.hidden = false;
+        submitStatus.textContent = "Could not send";
+      } finally {
+        submitButton.disabled = false;
+        resultBox.classList.add("active");
+        resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
+        updateCounter();
+      }
+    });
+
+    updateCounter();
+  </script>
+
+
+<div style="all: initial; position: fixed !important; display: block !important; z-index: 2147483647 !important"></div></body></html>
