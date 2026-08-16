@@ -170,7 +170,7 @@ Get registration toketn from GitLab
 [[st19.sne.com/root/st19-repo/-/settings/ci_cd#js-runners-settings](http://st19.sne.com/root/st19-repo/-/settings/ci_cd#js-runners-settings)]
 
 ```bash
-GR1348941-k3eXvejPHSJdNUQqiGz
+token
 ```
 
 1. Gitlab runner on VM2 setup on clean OS.
