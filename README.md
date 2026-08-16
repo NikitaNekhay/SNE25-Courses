@@ -1,47 +1,47 @@
 # Security and Network Engineering Courses
+
 Open-sourced Labs and Reports from my masters degree in Networking, Security and DevOps in Innopolis University 2026-2027.
 
-Here I want to thank our friend Ahmed N. for inspiration to create such repository.
+Here I want to thank our friend Ahmed N. for inspiration to create such a repository.
+
+🇷🇺 [Читать на русском](README.ru.md)
+
+---
 
 ## Description of the program
+
 The curriculum is based on System and Network Engineering program of the University of Amsterdam — the best Master's program (Computer Science) in the ranking of the Keuzegids Masters 2018.
 
-The intensive program is designed for IT specialists who have 1+ year of work experience and who aim at professional and career development in the field of network security. The program focuses on applied network engineering and computer security concepts in order to master real industry problem-solving skills.
+The program focuses on applied network engineering and computer security concepts in order to master real industry problem-solving skills.
 
 __The language of instruction is English.__
 
+---
 
 ## Masters Coursework
 
 > Currently pursuing Masters in Security and Network Engineering
 
-- [Networks Engineering](./Masters/Networks%20Engineering): practical network configuration tasks in GNS3 with virtual MikroTiK and Cisco equipment. Topics include IP, STP, VLAN, LACP, OSPF, QoS, and MPLS.
-- [Unix-Based Internet Applications](./Masters/Unix-Based%20Internet%20Applications): installing and configuring tools for network boot (dnsmasq), name server (BIND), mail agent (Exim), and web server (Nginx). Project works on DHCP and KeyCloak.
-- [Security of Systems and Networks](./Masters/Security%20of%20Systems%20and%20Networks): labs on classical cryptography, UEFI secure boot, OpenSSL, and OpenVPN. Project work on GitLab+LDAP.
-- [Computer Systems and Networks](./Masters/Computer%20Systems%20and%20Networks): labs on system architecture, IPC, network reconnaissance, systemd/crontab, and SAST tools. Project works on Kubernetes and Chord DHT.
-- [DevOps and Security](./Masters/DevOps%20and%20Security): labs on Docker, Ansible, Terraform, GitLab CI, and Kubernetes. Project work on Vulnerability Management with DefectDojo.
-- [Offensive Technologies](./Offensive%20Technologies): labs on binary disassembly/exploitation and software vulnerabilities. Project work on HTB machine writeup.
-- [Digital Forensics and Incident Response](./Masters/Digital%20Forensics%20and%20Incident%20Response): labs on Windows forensics, malware analysis, and incident response. Project work on Network Forensics with Malcolm.
-- [Secure Development](./Secure%20Development): labs on secure coding, fuzzing, SIEM, AppArmor/SELinux, and Pentesting.
+Every course folder has its own README with a lab-by-lab table. All reports are written in Markdown and keep their original screenshots next to them.
 
+| # | Course | Contents |
+|---|--------|----------|
+| 1 | [Security of Systems and Networks](./1_Security%20of%20Systems%20and%20Networks/README.md) | labs on classical cryptography, UEFI secure boot, OpenSSL, and OpenVPN. Project work on TLS/SSL attack & defense. |
+| 2 | [Computer Systems and Networks](./2_Computer%20Systems%20and%20Networks/README.md) | labs on system architecture, IPC, network reconnaissance, systemd/crontab, and SAST tools. Project works on Tor Browser forensics and WireGuard VPN with Samba AD DC. |
+| 3 | [Networks Engineering](./3_Networks%20Engineering/README.md) | practical network configuration tasks in GNS3 with virtual MikroTiK and Cisco equipment. Topics include IP, STP, VLAN, LACP, OSPF, QoS, and BGP. |
+| 4 | [Unix-Based Internet Applications](./4_Unix-Based%20Internet%20Applications/README.md) | installing and configuring tools for network boot (dnsmasq), name server (BIND), mail agent (Postfix/Dovecot), and web server (Nginx). Project work on a production secure email server. |
+| 5 | [DevOps](./5_DevOps/README.md) | labs on Docker, Ansible, Terraform, GitLab CI, Kubernetes and LLMs in pipelines. Project work on a DevSecOps AI GitLab bot. |
+| 6 | [Secure Development](./6_Secure%20Development/README.md) | labs on DevSecOps pipelines, secure coding, fuzzing, SIEM, AppArmor/SELinux, and penetration testing. |
+| 7 | [Computer Forensics and Incident Response](./7_Computer%20Forensics%20and%20Incident%20Response/README.md) | labs on data acquisition, file system forensics, sandboxing and malware analysis, and SIEM deployment. Project work on secure DevOps in cyber forensics. |
+| 8 | [Offensive Technologies](./8_Offensive%20Technologies/README.md) | labs on binary disassembly/exploitation, software vulnerabilities and malware analysis. Project work on an IoT deception honeypot network. |
+| 9 | [Financial Management in Digital Products](./9_Financial%20Management%20in%20Digital%20Products/README.md) | unit economics, financial statements, financial ratios and a digital habits case. |
+| 10 | [IT Team Management](./10_IT%20Team%20Management/README.md) | managing IT teams and delivery. |
 
-Интернет-приложения на ядре Unix
-Компьютерные системы и сети
-Сетевая инженерия
-Безопасность систем и сетей
-DevOps и безопасность
-Атакующие технологии
-Компьютерная криминалистика и реагирование на инцеденты
-Безопасная разработка
-Индустриальный проект SNE
-Практика
-
-Управление ИТ-командой
-Юнит Экономика
+---
 
 ## Skills acquired
-https://new.innopolis.university/en/masters/securityandnetworkengineering/
 
+<https://new.innopolis.university/en/masters/securityandnetworkengineering/>
 
 - Debugging, disassembling, tracing and interpreting system call commands
 - Ensuring availability, integrity and confidentiality at the network level
@@ -52,120 +52,80 @@ https://new.innopolis.university/en/masters/securityandnetworkengineering/
 - Secure IT infrastructure creation, support and monitoring
 - Predicting and searching for cyber threats, detecting and deterring computer attacks development, integration and monitoring of software development life cycle systems (DevOps)
 
+<https://apply.innopolis.university/masters/securityandnetworkengineering/>
 
+- Install, configure and maintain enterprise-level IT infrastructure in a secure manner
+- Install, configure and maintain virtualized/containerized infrastructure at large scale
+- Work with continuous integration and continuous deployment technologies
+- Work with backup, logging, performance monitoring and disaster recovery systems
+- Collect and extract data from various sources
+- Classify the main types of threats, vulnerabilities and attackers
+- Test systems for vulnerabilities
+- Work with the main methods and means of technical information protection in operating systems, networks and application software
+- Collect and analyse digital evidence, investigate computer incidents, predict and hunt cyber threats, detect and contain computer attacks
 
-https://apply.innopolis.university/masters/securityandnetworkengineering/
-
-
-Устанавливать, конфигурировать и поддерживать ИТ-инфраструктуру на уровне предприятия в защищенном исполнении
-Устанавливать, конфигурировать и поддерживать виртуализированную/контейнеризированную инфраструктуру в больших масштабах
-Работать с технологиями непрерывной интеграции и непрерывного развертывания кода
-Работать с системами резервного копирования, логирования, мониторинга производительности и аварийного восстановления систем
-Собирать и извлекать данные из различных источников 
-Проводить классификацию основных видов угроз, уязвимостей и нарушителей
-Тестировать системы на уязвимости
-Работать с основными методами и средствами технической защиты информации в операционных системах, сетях и прикладного ПО
-Проводить работу по сбору и анализу цифровых доказательств и проведению расследований компьютерных инцидентов, а также по прогнозированию и поиску киберугроз, обнаружению и сдерживанию компьютерных атак 
-
+---
 
 ## Tools used
-https://apply.innopolis.university/masters/securityandnetworkengineering/
 
-Администрирование сетей и систем 
+<https://apply.innopolis.university/masters/securityandnetworkengineering/>
 
+**Network and systems administration**
 
-UEFi
-Grub
-GNS3
-Wireshark
-dd
-strace
-openssl
-curl
-Mikrotik
-Pfsense
-VMware
-VirtualBox
-Hyper-V
-Linux KVM
-Citrix Hypervisor
-XenServer
-GlusterFS
-HDFS
-CephFS
-Hadoop
-DRBD
+UEFI · Grub · GNS3 · Wireshark · dd · strace · openssl · curl · Mikrotik · Pfsense · VMware · VirtualBox · Hyper-V · Linux KVM · Citrix Hypervisor · XenServer · GlusterFS · HDFS · CephFS · Hadoop · DRBD
 
-Автоматизация и администрирование процессов разработки ПО 
+**Automation and administration of software development processes**
 
-Jenkins
-Gitlab CI
-Github Actions
-Ansible
-Puppet
-Chef
-Docker
-Docker Swarm
-Kubernetes
-CassandraDB
-MongoDB
-Mysql
-SonarQube
-Grafana
-Kibana
-Zabbix
+Jenkins · Gitlab CI · Github Actions · Ansible · Puppet · Chef · Docker · Docker Swarm · Kubernetes · CassandraDB · MongoDB · Mysql · SonarQube · Grafana · Kibana · Zabbix
 
-Анализ защищенности и тестирование на проникновение 
+**Security assessment and penetration testing**
 
-Metasploit framework
-SonarQube
-Nessus
-Nmap
-Ghidra
-Radare2
-Immunity Debugger
+Metasploit framework · SonarQube · Nessus · Nmap · Ghidra · Radare2 · Immunity Debugger
 
+**Collection and analysis of digital evidence for computer incident investigation**
 
-Сбор и анализ цифровых доказательств расследования компьютерных инцидентов
+Disk Image Mounter · Autopsy · Sleuth Kit · PhotoRec · log2timeline · mactime
 
-Disk Image Mounter
-Autopsy
-Sleutch Kit
-PhotoRec
-log2timeline
-mactime
+**Information security threat monitoring**
 
-Мониторинг угроз ИБ 
+Cuckoo · Snort · Wazuh
 
+---
 
-Сuckoo
-Snort
-Wazuh
+## Further career paths
 
+**DevOps Engineer**
+Automates development, testing and deployment processes, sets up CI/CD pipelines, manages infrastructure as code (IaC), ensures monitoring and uninterrupted system operation.
 
-# Further work jobs
+**DevSecOps Engineer**
+Integrates security practices into DevOps processes, automates security checks in CI/CD pipelines, ensures infrastructure compliance with security requirements at every stage of development.
 
+**Software Security Engineer**
+Audits code, tests applications for vulnerabilities, develops and implements protection mechanisms, ensures security across the whole software development lifecycle.
 
-DevOps-инженер
-Автоматизирует процессы разработки, тестирования и развертывания ПО, настраивает CI/CD-пайплайны, управляет инфраструктурой как кодом (IaC), обеспечивает мониторинг и бесперебойную работу систем
+**Penetration Testing Specialist**
+Conducts controlled attacks on systems to identify vulnerabilities, models the behaviour of attackers, prepares reports and recommendations for strengthening defenses.
 
-DevSecOps-инженер
-Интегрирует практики безопасности в процессы DevOps, автоматизирует проверки безопасности в CI/CD-пайплайнах, обеспечивает соответствие инфраструктуры требованиям безопасности на всех этапах разработки
+**Computer Systems and Networks Security Engineer**
+Designs and implements network infrastructure protection systems, configures firewalls, intrusion detection and prevention systems, ensures secure data transmission.
 
-Инженер по безопасности ПО
-Проводит аудит кода, тестирует приложения на уязвимости, разрабатывает и внедряет механизмы защиты, обеспечивает безопасность на всех этапах жизненного цикла разработки ПО
+**Systems Engineer**
+Designs, deploys and maintains IT infrastructure, ensures integration of various systems, optimizes performance and fault tolerance of complex solutions.
 
-Специалист по тестированию на проникновение
-Проводит контролируемые атаки на системы для выявления уязвимостей, моделирует действия злоумышленников, готовит отчеты и рекомендации по усилению защиты
+**Systems Analyst**
+Analyses business requirements, designs the architecture of secure IT solutions.
 
-Инженер по безопасности компьютерных систем и сетей
-Проектирует и внедряет системы защиты сетевой инфраструктуры, настраивает межсетевые экраны, системы обнаружения и предотвращения вторжений, обеспечивает безопасность передачи данных
+**System Administrator**
+Ensures the operability of servers and network equipment, manages access rights, performs backups, maintains IT infrastructure in accordance with security policies.
 
-Системный инженер
-Проектирует, развертывает и обслуживает ИТ-инфраструктуру, обеспечивает интеграцию различных систем, оптимизирует производительность и отказоустойчивость комплексных решений
+---
 
-Системный аналитик
-Анализирует бизнес-требования, проектирует архитектуру безопасных ИТ-решений
+## Materials for the labs (images, zip files)
 
-Системный администратор
-Обеспечивает работоспособность серверов и сетевого оборудования, управляет правами доступа, выполняет резервное копирование, поддерживает ИТ-инфраструктуру в соответствии с политиками безопасности
+Link to private folder: https://drive.google.com/drive/u/3/folders/1Ne7hnJypXBD23rPkegLQe4ZmAoveMpMc
+
+---
+
+## License
+
+See [LICENSE](LICENSE).

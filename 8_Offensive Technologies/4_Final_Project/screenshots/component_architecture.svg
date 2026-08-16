@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 880" font-family="Arial, Helvetica, sans-serif" font-size="13">
+  <style>
+    .host { fill: #fafafa; stroke: #333; stroke-width: 2; }
+    .group { fill: #ffffff; stroke: #666; stroke-width: 1.5; stroke-dasharray: 6,4; }
+    .container { fill: #ffffff; stroke: #333; stroke-width: 1.5; }
+    .decoy { fill: #fff5f5; stroke: #c0392b; stroke-width: 2; }
+    .siem { fill: #f0f7ff; stroke: #1f4e8a; stroke-width: 2; }
+    .pipeline { fill: #f3fff0; stroke: #2e7d32; stroke-width: 2; }
+    .volume { fill: #fffbe6; stroke: #b8860b; stroke-width: 1; }
+    .label-host { font-size: 14px; font-weight: bold; fill: #333; }
+    .label-group { font-size: 13px; font-weight: bold; fill: #555; }
+    .label-comp { font-size: 13px; font-weight: bold; fill: #222; }
+    .label-tech { font-size: 11px; fill: #555; font-style: italic; }
+    .label-port { font-size: 11px; fill: #c0392b; font-weight: bold; }
+    .label-iface { font-size: 10px; fill: #444; }
+    .arrow { fill: none; stroke: #333; stroke-width: 1.5; }
+    .arrow-data { fill: none; stroke: #2e7d32; stroke-width: 1.8; }
+    .arrow-mount { fill: none; stroke: #b8860b; stroke-width: 1; stroke-dasharray: 3,3; }
+  </style>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2e7d32"/>
+    </marker>
+    <marker id="arrow-yellow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#b8860b"/>
+    </marker>
+  </defs>
+
+  <!-- VPS Host boundary -->
+  <rect x="30" y="30" width="1140" height="820" rx="6" class="host"/>
+  <text x="50" y="55" class="label-host">VPS Host  ·  Yandex Cloud  ·  Ubuntu 24.04</text>
+  <text x="50" y="72" class="label-tech">UFW deny-by-default  ·  hardened sshd on port 53214</text>
+
+  <!-- Docker Engine boundary -->
+  <rect x="60" y="95" width="1080" height="730" rx="6" class="group"/>
+  <text x="80" y="118" class="label-group">Docker Engine  +  Docker Compose</text>
+
+  <!-- Decoy services group -->
+  <rect x="85" y="145" width="540" height="320" rx="6" class="group" stroke="#c0392b"/>
+  <text x="105" y="168" class="label-group" fill="#c0392b">Decoy Services  (publicly exposed)</text>
+
+  <!-- Cowrie -->
+  <rect x="105" y="190" width="240" height="110" rx="4" class="decoy"/>
+  <text x="225" y="212" text-anchor="middle" class="label-comp">Cowrie</text>
+  <text x="225" y="228" text-anchor="middle" class="label-tech">SSH / Telnet honeypot</text>
+  <line x1="115" y1="238" x2="335" y2="238" stroke="#c0392b" stroke-width="0.5"/>
+  <text x="115" y="254" class="label-port">tcp/22  →  container 2222</text>
+  <text x="115" y="270" class="label-port">tcp/23  →  container 2223</text>
+  <text x="115" y="288" class="label-iface">captures: credentials, commands, payloads</text>
+
+  <!-- Fake camera -->
+  <rect x="365" y="190" width="240" height="110" rx="4" class="decoy"/>
+  <text x="485" y="212" text-anchor="middle" class="label-comp">fake-cam</text>
+  <text x="485" y="228" text-anchor="middle" class="label-tech">nginx alpine  ·  IP camera stub</text>
+  <line x1="375" y1="238" x2="595" y2="238" stroke="#c0392b" stroke-width="0.5"/>
+  <text x="375" y="254" class="label-port">tcp/8080  →  container 80</text>
+  <text x="375" y="272" class="label-iface">decoy paths: /cgi-bin/admin.cgi,</text>
+  <text x="375" y="288" class="label-iface">/onvif/device_service, /ISAPI/...</text>
+
+  <!-- MQTT honeypot -->
+  <rect x="235" y="325" width="240" height="110" rx="4" class="decoy"/>
+  <text x="355" y="347" text-anchor="middle" class="label-comp">mqtt-honeypot</text>
+  <text x="355" y="363" text-anchor="middle" class="label-tech">eclipse-mosquitto</text>
+  <line x1="245" y1="373" x2="465" y2="373" stroke="#c0392b" stroke-width="0.5"/>
+  <text x="245" y="389" class="label-port">tcp/1883  →  container 1883</text>
+  <text x="245" y="407" class="label-iface">allow_anonymous true</text>
+  <text x="245" y="423" class="label-iface">log_type all</text>
+
+  <!-- Log pipeline group -->
+  <rect x="650" y="145" width="220" height="320" rx="6" class="group" stroke="#2e7d32"/>
+  <text x="670" y="168" class="label-group" fill="#2e7d32">Log Shipping</text>
+
+  <rect x="670" y="220" width="180" height="100" rx="4" class="pipeline"/>
+  <text x="760" y="245" text-anchor="middle" class="label-comp">Filebeat</text>
+  <text x="760" y="262" text-anchor="middle" class="label-tech">log shipper</text>
+  <line x1="680" y1="275" x2="840" y2="275" stroke="#2e7d32" stroke-width="0.5"/>
+  <text x="680" y="292" class="label-iface">inputs: cowrie.json,</text>
+  <text x="680" y="306" class="label-iface">access.json, mosquitto.log</text>
+
+  <rect x="670" y="345" width="180" height="90" rx="4" class="pipeline"/>
+  <text x="760" y="368" text-anchor="middle" class="label-comp">Wazuh Agent</text>
+  <text x="760" y="384" text-anchor="middle" class="label-tech">host-level monitor</text>
+  <text x="680" y="410" class="label-iface">file integrity, syscalls,</text>
+  <text x="680" y="424" class="label-iface">auditd events</text>
+
+  <!-- SIEM group -->
+  <rect x="895" y="145" width="225" height="360" rx="6" class="group" stroke="#1f4e8a"/>
+  <text x="915" y="168" class="label-group" fill="#1f4e8a">SIEM  ·  Wazuh + ELK</text>
+
+  <rect x="915" y="190" width="185" height="80" rx="4" class="siem"/>
+  <text x="1007" y="213" text-anchor="middle" class="label-comp">Wazuh Manager</text>
+  <text x="1007" y="230" text-anchor="middle" class="label-tech">rules 100100–100124</text>
+  <text x="925" y="252" class="label-iface">correlation, alerting</text>
+
+  <rect x="915" y="290" width="185" height="80" rx="4" class="siem"/>
+  <text x="1007" y="313" text-anchor="middle" class="label-comp">Wazuh Indexer</text>
+  <text x="1007" y="330" text-anchor="middle" class="label-tech">OpenSearch backend</text>
+  <text x="925" y="352" class="label-iface">storage, search</text>
+
+  <rect x="915" y="390" width="185" height="80" rx="4" class="siem"/>
+  <text x="1007" y="413" text-anchor="middle" class="label-comp">Wazuh Dashboard</text>
+  <text x="1007" y="430" text-anchor="middle" class="label-tech">Kibana frontend</text>
+  <text x="925" y="452" class="label-port">tcp/443  (admin only)</text>
+
+  <!-- Volumes / persistence -->
+  <rect x="85" y="500" width="785" height="220" rx="6" class="group" stroke="#b8860b"/>
+  <text x="105" y="523" class="label-group" fill="#b8860b">Bind Mounts  ·  Host Filesystem</text>
+
+  <rect x="105" y="545" width="170" height="60" rx="4" class="volume"/>
+  <text x="190" y="568" text-anchor="middle" class="label-comp">cowrie/logs</text>
+  <text x="190" y="585" text-anchor="middle" class="label-iface">cowrie.json, tty/</text>
+
+  <rect x="290" y="545" width="170" height="60" rx="4" class="volume"/>
+  <text x="375" y="568" text-anchor="middle" class="label-comp">cowrie/config</text>
+  <text x="375" y="585" text-anchor="middle" class="label-iface">cowrie.cfg, userdb.txt</text>
+
+  <rect x="475" y="545" width="170" height="60" rx="4" class="volume"/>
+  <text x="560" y="568" text-anchor="middle" class="label-comp">fake-cam/logs</text>
+  <text x="560" y="585" text-anchor="middle" class="label-iface">access.json</text>
+
+  <rect x="660" y="545" width="170" height="60" rx="4" class="volume"/>
+  <text x="745" y="568" text-anchor="middle" class="label-comp">fake-cam/html</text>
+  <text x="745" y="585" text-anchor="middle" class="label-iface">camera stub pages</text>
+
+  <rect x="105" y="625" width="170" height="60" rx="4" class="volume"/>
+  <text x="190" y="648" text-anchor="middle" class="label-comp">mqtt/logs</text>
+  <text x="190" y="665" text-anchor="middle" class="label-iface">mosquitto.log</text>
+
+  <rect x="290" y="625" width="170" height="60" rx="4" class="volume"/>
+  <text x="375" y="648" text-anchor="middle" class="label-comp">mqtt/config</text>
+  <text x="375" y="665" text-anchor="middle" class="label-iface">mosquitto.conf</text>
+
+  <rect x="475" y="625" width="170" height="60" rx="4" class="volume"/>
+  <text x="560" y="648" text-anchor="middle" class="label-comp">cowrie/dl</text>
+  <text x="560" y="665" text-anchor="middle" class="label-iface">downloaded malware</text>
+
+  <!-- Decoy logs -> Filebeat -->
+  <path d="M 345 245 L 670 260" class="arrow-data" marker-end="url(#arrow-green)"/>
+  <path d="M 605 245 L 670 270" class="arrow-data" marker-end="url(#arrow-green)"/>
+  <path d="M 475 370 L 670 290" class="arrow-data" marker-end="url(#arrow-green)"/>
+  <text x="500" y="220" class="label-iface" fill="#2e7d32">json logs</text>
+
+  <!-- Filebeat -> Wazuh Manager -->
+  <path d="M 850 270 L 915 220" class="arrow-data" marker-end="url(#arrow-green)"/>
+  <text x="855" y="235" class="label-iface" fill="#2e7d32">forward</text>
+
+  <!-- Wazuh Agent -> Manager -->
+  <path d="M 850 380 L 915 240" class="arrow-data" marker-end="url(#arrow-green)"/>
+
+  <!-- Manager -> Indexer -> Dashboard -->
+  <path d="M 1007 270 L 1007 290" class="arrow" marker-end="url(#arrow)"/>
+  <path d="M 1007 370 L 1007 390" class="arrow" marker-end="url(#arrow)"/>
+
+  <!-- Mounts: containers -> volumes -->
+  <path d="M 225 300 L 190 545" class="arrow-mount" marker-end="url(#arrow-yellow)"/>
+  <path d="M 260 300 L 375 545" class="arrow-mount" marker-end="url(#arrow-yellow)"/>
+  <path d="M 485 300 L 560 545" class="arrow-mount" marker-end="url(#arrow-yellow)"/>
+  <path d="M 510 300 L 745 545" class="arrow-mount" marker-end="url(#arrow-yellow)"/>
+  <path d="M 320 435 L 220 625" class="arrow-mount" marker-end="url(#arrow-yellow)"/>
+  <path d="M 380 435 L 375 625" class="arrow-mount" marker-end="url(#arrow-yellow)"/>
+  <path d="M 280 300 L 555 625" class="arrow-mount" marker-end="url(#arrow-yellow)"/>
+</svg>

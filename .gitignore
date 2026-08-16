@@ -1,18 +1,24 @@
-00_template/
-
 # ignore all literature files in any directory
 0_Literature/
 0_1_Lectures/
 4_1_Materials_for_presentation/
 5_Exam/
 
+
+# exclude the contents, not the directory itself, so the README below can be
+# re-included: git cannot re-include a file whose parent directory is excluded
+9_Financial Management in Digital Products/*
+!9_Financial Management in Digital Products/README.md
+10_IT Team Management/*
+!10_IT Team Management/README.md
+
 *.mp4
 *.zip
 *.ova
-*.pdf
+#*.pdf
 *.7z
 *.gz
-*.pptx
+#*.pptx
 f95f4d1548329333169c540e234edd0f6e5305
 *.qcow2
 add66146428ae1076436bf7ca279d92bda5f26

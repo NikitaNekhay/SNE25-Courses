@@ -1,0 +1,268 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1050" font-family="Arial, Helvetica, sans-serif" font-size="13">
+  <style>
+    .host { fill: #fafafa; stroke: #333; stroke-width: 2; }
+    .net-zone { fill: #ffffff; stroke: #666; stroke-width: 1.5; stroke-dasharray: 6,4; }
+    .firewall { fill: #fff5f5; stroke: #c0392b; stroke-width: 2.5; }
+    .docker-net { fill: #f5f9ff; stroke: #1f4e8a; stroke-width: 2; stroke-dasharray: 8,4; }
+    .node { fill: #ffffff; stroke: #333; stroke-width: 1.5; }
+    .decoy { fill: #fff5f5; stroke: #c0392b; stroke-width: 2; }
+    .siem { fill: #f0f7ff; stroke: #1f4e8a; stroke-width: 2; }
+    .admin { fill: #f3fff0; stroke: #2e7d32; stroke-width: 2; }
+    .label-host { font-size: 14px; font-weight: bold; fill: #333; }
+    .label-zone { font-size: 13px; font-weight: bold; fill: #555; }
+    .label-comp { font-size: 13px; font-weight: bold; fill: #222; }
+    .label-tech { font-size: 11px; fill: #555; font-style: italic; }
+    .label-port-open { font-size: 11px; fill: #c0392b; font-weight: bold; }
+    .label-port-admin { font-size: 11px; fill: #2e7d32; font-weight: bold; }
+    .label-port-blocked { font-size: 11px; fill: #888; font-weight: bold; }
+    .label-iface { font-size: 10px; fill: #444; }
+    .label-ip { font-size: 10px; fill: #1f4e8a; font-family: 'Courier New', monospace; }
+    .arrow { fill: none; stroke: #333; stroke-width: 1.5; }
+    .arrow-attack { fill: none; stroke: #c0392b; stroke-width: 2; }
+    .arrow-admin { fill: none; stroke: #2e7d32; stroke-width: 2; stroke-dasharray: 5,3; }
+    .arrow-internal { fill: none; stroke: #1f4e8a; stroke-width: 1.5; }
+    .blocked { stroke: #888; stroke-width: 1.5; stroke-dasharray: 4,3; fill: none; }
+  </style>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c0392b"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2e7d32"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1f4e8a"/>
+    </marker>
+  </defs>
+
+  <!-- ============================================== -->
+  <!-- ZONE 1: Public Internet                         -->
+  <!-- ============================================== -->
+  <rect x="30" y="30" width="1140" height="120" rx="6" class="net-zone"/>
+  <text x="50" y="55" class="label-zone">Public Internet</text>
+
+  <!-- Internet attacker -->
+  <rect x="80" y="75" width="180" height="60" rx="4" class="node" fill="#fdecea" stroke="#c0392b"/>
+  <text x="170" y="98" text-anchor="middle" class="label-comp">Internet Attackers</text>
+  <text x="170" y="115" text-anchor="middle" class="label-tech">scanners, botnets</text>
+  <text x="170" y="130" text-anchor="middle" class="label-iface">arbitrary source IP</text>
+
+  <!-- Administrator -->
+  <rect x="940" y="75" width="180" height="60" rx="4" class="admin"/>
+  <text x="1030" y="98" text-anchor="middle" class="label-comp">Administrator</text>
+  <text x="1030" y="115" text-anchor="middle" class="label-tech">SSH key auth</text>
+  <text x="1030" y="130" text-anchor="middle" class="label-iface">whitelisted source IP</text>
+
+  <!-- ============================================== -->
+  <!-- ZONE 2: VPS Host (Yandex Cloud)                 -->
+  <!-- ============================================== -->
+  <rect x="30" y="170" width="1140" height="650" rx="6" class="host"/>
+  <text x="50" y="195" class="label-host">VPS Host  ·  Yandex Cloud  ·  Ubuntu 24.04</text>
+  <text x="50" y="212" class="label-ip">Public IP: x.x.x.x  /  eth0</text>
+
+  <!-- Firewall layer (UFW) -->
+  <rect x="60" y="230" width="1080" height="90" rx="4" class="firewall"/>
+  <text x="80" y="252" class="label-zone" fill="#c0392b">UFW Firewall  ·  deny-by-default inbound policy</text>
+
+  <!-- Allowed ports -->
+  <rect x="80" y="265" width="100" height="42" rx="3" class="node" fill="#fff5f5" stroke="#c0392b"/>
+  <text x="130" y="282" text-anchor="middle" class="label-port-open">tcp/22</text>
+  <text x="130" y="298" text-anchor="middle" class="label-iface">SSH decoy</text>
+
+  <rect x="190" y="265" width="100" height="42" rx="3" class="node" fill="#fff5f5" stroke="#c0392b"/>
+  <text x="240" y="282" text-anchor="middle" class="label-port-open">tcp/23</text>
+  <text x="240" y="298" text-anchor="middle" class="label-iface">Telnet decoy</text>
+
+  <rect x="300" y="265" width="100" height="42" rx="3" class="node" fill="#fff5f5" stroke="#c0392b"/>
+  <text x="350" y="282" text-anchor="middle" class="label-port-open">tcp/8080</text>
+  <text x="350" y="298" text-anchor="middle" class="label-iface">HTTP camera</text>
+
+  <rect x="410" y="265" width="100" height="42" rx="3" class="node" fill="#fff5f5" stroke="#c0392b"/>
+  <text x="460" y="282" text-anchor="middle" class="label-port-open">tcp/1883</text>
+  <text x="460" y="298" text-anchor="middle" class="label-iface">MQTT decoy</text>
+
+  <rect x="780" y="265" width="120" height="42" rx="3" class="node" fill="#f3fff0" stroke="#2e7d32"/>
+  <text x="840" y="282" text-anchor="middle" class="label-port-admin">tcp/53214</text>
+  <text x="840" y="298" text-anchor="middle" class="label-iface">real SSH (admin)</text>
+
+  <rect x="910" y="265" width="120" height="42" rx="3" class="node" fill="#f3fff0" stroke="#2e7d32"/>
+  <text x="970" y="282" text-anchor="middle" class="label-port-admin">tcp/443</text>
+  <text x="970" y="298" text-anchor="middle" class="label-iface">Wazuh dashboard</text>
+
+  <!-- Blocked indicator -->
+  <rect x="1040" y="265" width="80" height="42" rx="3" class="node" fill="#f5f5f5" stroke="#888"/>
+  <text x="1080" y="282" text-anchor="middle" class="label-port-blocked">all other</text>
+  <text x="1080" y="298" text-anchor="middle" class="label-iface">DENY</text>
+
+  <!-- Docker bridge network -->
+  <rect x="60" y="345" width="1080" height="460" rx="6" class="docker-net"/>
+  <text x="80" y="368" class="label-zone" fill="#1f4e8a">Docker Bridge Network</text>
+  <text x="80" y="384" class="label-ip">subnet: 172.18.0.0/16  ·  gateway: 172.18.0.1</text>
+
+  <!-- Decoy containers -->
+  <rect x="90" y="410" width="200" height="120" rx="4" class="decoy"/>
+  <text x="190" y="432" text-anchor="middle" class="label-comp">cowrie</text>
+  <text x="190" y="448" text-anchor="middle" class="label-tech">SSH/Telnet honeypot</text>
+  <line x1="100" y1="458" x2="280" y2="458" stroke="#c0392b" stroke-width="0.5"/>
+  <text x="100" y="475" class="label-ip">172.18.0.10</text>
+  <text x="100" y="491" class="label-iface">listens: 2222, 2223</text>
+  <text x="100" y="507" class="label-port-open">host 22 → 2222</text>
+  <text x="100" y="523" class="label-port-open">host 23 → 2223</text>
+
+  <rect x="320" y="410" width="200" height="120" rx="4" class="decoy"/>
+  <text x="420" y="432" text-anchor="middle" class="label-comp">fake-cam</text>
+  <text x="420" y="448" text-anchor="middle" class="label-tech">nginx IP camera stub</text>
+  <line x1="330" y1="458" x2="510" y2="458" stroke="#c0392b" stroke-width="0.5"/>
+  <text x="330" y="475" class="label-ip">172.18.0.11</text>
+  <text x="330" y="491" class="label-iface">listens: 80</text>
+  <text x="330" y="507" class="label-port-open">host 8080 → 80</text>
+  <text x="330" y="523" class="label-iface">decoy ONVIF / ISAPI paths</text>
+
+  <rect x="550" y="410" width="200" height="120" rx="4" class="decoy"/>
+  <text x="650" y="432" text-anchor="middle" class="label-comp">mqtt-honeypot</text>
+  <text x="650" y="448" text-anchor="middle" class="label-tech">eclipse-mosquitto</text>
+  <line x1="560" y1="458" x2="740" y2="458" stroke="#c0392b" stroke-width="0.5"/>
+  <text x="560" y="475" class="label-ip">172.18.0.12</text>
+  <text x="560" y="491" class="label-iface">listens: 1883</text>
+  <text x="560" y="507" class="label-port-open">host 1883 → 1883</text>
+  <text x="560" y="523" class="label-iface">allow_anonymous true</text>
+
+  <!-- Log shipping (Filebeat) -->
+  <rect x="90" y="570" width="200" height="100" rx="4" class="node" fill="#f3fff0" stroke="#2e7d32"/>
+  <text x="190" y="592" text-anchor="middle" class="label-comp">Filebeat</text>
+  <text x="190" y="608" text-anchor="middle" class="label-tech">log shipper (host)</text>
+  <line x1="100" y1="618" x2="280" y2="618" stroke="#2e7d32" stroke-width="0.5"/>
+  <text x="100" y="635" class="label-iface">reads bind-mounted logs:</text>
+  <text x="100" y="650" class="label-iface">cowrie.json, access.json,</text>
+  <text x="100" y="665" class="label-iface">mosquitto.log</text>
+
+  <!-- Wazuh Agent -->
+  <rect x="320" y="570" width="200" height="100" rx="4" class="node" fill="#f3fff0" stroke="#2e7d32"/>
+  <text x="420" y="592" text-anchor="middle" class="label-comp">Wazuh Agent</text>
+  <text x="420" y="608" text-anchor="middle" class="label-tech">host-level monitor</text>
+  <line x1="330" y1="618" x2="510" y2="618" stroke="#2e7d32" stroke-width="0.5"/>
+  <text x="330" y="635" class="label-iface">file integrity, syscalls,</text>
+  <text x="330" y="650" class="label-iface">auditd events</text>
+  <text x="330" y="665" class="label-port-admin">→ manager tcp/1514</text>
+
+  <!-- SIEM containers -->
+  <rect x="800" y="410" width="320" height="380" rx="6" class="net-zone" stroke="#1f4e8a"/>
+  <text x="820" y="433" class="label-zone" fill="#1f4e8a">SIEM Stack  ·  Wazuh + ELK</text>
+
+  <rect x="820" y="455" width="280" height="95" rx="4" class="siem"/>
+  <text x="960" y="478" text-anchor="middle" class="label-comp">Wazuh Manager</text>
+  <text x="960" y="494" text-anchor="middle" class="label-tech">correlation engine</text>
+  <line x1="830" y1="504" x2="1090" y2="504" stroke="#1f4e8a" stroke-width="0.5"/>
+  <text x="830" y="521" class="label-ip">172.18.0.20</text>
+  <text x="830" y="538" class="label-port-admin">tcp/1514 (agent)  ·  tcp/55000 (api)</text>
+
+  <rect x="820" y="565" width="280" height="95" rx="4" class="siem"/>
+  <text x="960" y="588" text-anchor="middle" class="label-comp">Wazuh Indexer</text>
+  <text x="960" y="604" text-anchor="middle" class="label-tech">OpenSearch backend</text>
+  <line x1="830" y1="614" x2="1090" y2="614" stroke="#1f4e8a" stroke-width="0.5"/>
+  <text x="830" y="631" class="label-ip">172.18.0.21</text>
+  <text x="830" y="648" class="label-port-admin">tcp/9200 (internal)</text>
+
+  <rect x="820" y="675" width="280" height="95" rx="4" class="siem"/>
+  <text x="960" y="698" text-anchor="middle" class="label-comp">Wazuh Dashboard</text>
+  <text x="960" y="714" text-anchor="middle" class="label-tech">Kibana frontend</text>
+  <line x1="830" y1="724" x2="1090" y2="724" stroke="#1f4e8a" stroke-width="0.5"/>
+  <text x="830" y="741" class="label-ip">172.18.0.22</text>
+  <text x="830" y="758" class="label-port-admin">host 443 → 5601</text>
+
+  <!-- ============================================== -->
+  <!-- ARROWS                                          -->
+  <!-- ============================================== -->
+
+  <!-- Attacker -> firewall (allowed decoy ports) -->
+  <path d="M 170 135 L 130 265" class="arrow-attack" marker-end="url(#arrow-red)"/>
+  <path d="M 175 135 L 240 265" class="arrow-attack" marker-end="url(#arrow-red)"/>
+  <path d="M 180 135 L 350 265" class="arrow-attack" marker-end="url(#arrow-red)"/>
+  <path d="M 185 135 L 460 265" class="arrow-attack" marker-end="url(#arrow-red)"/>
+
+  <!-- Attacker -> blocked (denied) -->
+  <path d="M 220 135 L 1080 265" class="blocked"/>
+  <text x="650" y="170" class="label-port-blocked">denied by UFW</text>
+
+  <!-- Admin -> firewall -->
+  <path d="M 1010 135 L 840 265" class="arrow-admin" marker-end="url(#arrow-green)"/>
+  <path d="M 1030 135 L 970 265" class="arrow-admin" marker-end="url(#arrow-green)"/>
+
+  <!-- Firewall -> decoy containers (port forwarding) -->
+  <path d="M 130 307 L 190 410" class="arrow-attack" marker-end="url(#arrow-red)"/>
+  <path d="M 240 307 L 200 410" class="arrow-attack" marker-end="url(#arrow-red)"/>
+  <path d="M 350 307 L 420 410" class="arrow-attack" marker-end="url(#arrow-red)"/>
+  <path d="M 460 307 L 650 410" class="arrow-attack" marker-end="url(#arrow-red)"/>
+
+  <!-- Firewall -> dashboard / admin SSH -->
+  <path d="M 970 307 L 960 675" class="arrow-admin" marker-end="url(#arrow-green)"/>
+
+  <!-- Decoy containers -> Filebeat (via mounted volumes) -->
+  <path d="M 190 530 L 190 570" class="arrow-internal" marker-end="url(#arrow-blue)"/>
+  <path d="M 380 530 Q 280 555 240 570" class="arrow-internal" marker-end="url(#arrow-blue)"/>
+  <path d="M 600 530 Q 400 555 250 570" class="arrow-internal" marker-end="url(#arrow-blue)"/>
+
+  <!-- Filebeat -> Wazuh Manager -->
+  <path d="M 290 615 Q 600 530 820 490" class="arrow-internal" marker-end="url(#arrow-blue)"/>
+  <text x="500" y="555" class="label-iface" fill="#1f4e8a">forward (tcp/1514)</text>
+
+  <!-- Wazuh Agent -> Manager -->
+  <path d="M 520 615 Q 700 555 820 510" class="arrow-internal" marker-end="url(#arrow-blue)"/>
+
+  <!-- Manager -> Indexer -> Dashboard -->
+  <path d="M 960 550 L 960 565" class="arrow-internal" marker-end="url(#arrow-blue)"/>
+  <path d="M 960 660 L 960 675" class="arrow-internal" marker-end="url(#arrow-blue)"/>
+
+  <!-- ============================================== -->
+  <!-- LEGEND (BELOW the host container)               -->
+  <!-- ============================================== -->
+  <rect x="30" y="840" width="1140" height="190" rx="4" fill="#ffffff" stroke="#333" stroke-width="1"/>
+  <text x="50" y="865" class="label-zone">Legend</text>
+
+  <!-- Column 1: Node types -->
+  <text x="50" y="890" class="label-comp" font-size="12">Node Types</text>
+  <rect x="50" y="900" width="22" height="14" class="decoy"/>
+  <text x="80" y="911" class="label-iface">Decoy service (publicly exposed)</text>
+  <rect x="50" y="922" width="22" height="14" class="siem"/>
+  <text x="80" y="933" class="label-iface">SIEM component (internal only)</text>
+  <rect x="50" y="944" width="22" height="14" fill="#f3fff0" stroke="#2e7d32" stroke-width="2"/>
+  <text x="80" y="955" class="label-iface">Admin / log-shipping component</text>
+  <rect x="50" y="966" width="22" height="14" fill="#fdecea" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="80" y="977" class="label-iface">External attacker</text>
+  <rect x="50" y="988" width="22" height="14" class="firewall"/>
+  <text x="80" y="999" class="label-iface">UFW firewall layer</text>
+
+  <!-- Column 2: Port types -->
+  <text x="370" y="890" class="label-comp" font-size="12">Port Markers</text>
+  <text x="370" y="911" class="label-port-open">tcp/N</text>
+  <text x="430" y="911" class="label-iface">Decoy port (open to internet)</text>
+  <text x="370" y="933" class="label-port-admin">tcp/N</text>
+  <text x="430" y="933" class="label-iface">Admin port (whitelisted)</text>
+  <text x="370" y="955" class="label-port-blocked">tcp/N</text>
+  <text x="430" y="955" class="label-iface">Denied by firewall</text>
+  <text x="370" y="977" class="label-ip">172.18.0.x</text>
+  <text x="430" y="977" class="label-iface">Internal Docker bridge IP</text>
+
+  <!-- Column 3: Lines / arrows -->
+  <text x="690" y="890" class="label-comp" font-size="12">Connections</text>
+  <line x1="690" y1="905" x2="730" y2="905" class="arrow-attack" marker-end="url(#arrow-red)"/>
+  <text x="745" y="909" class="label-iface">Attack traffic (inbound)</text>
+
+  <line x1="690" y1="925" x2="730" y2="925" class="arrow-admin" marker-end="url(#arrow-green)"/>
+  <text x="745" y="929" class="label-iface">Admin traffic (whitelisted)</text>
+
+  <line x1="690" y1="945" x2="730" y2="945" class="arrow-internal" marker-end="url(#arrow-blue)"/>
+  <text x="745" y="949" class="label-iface">Internal log / data flow</text>
+
+  <line x1="690" y1="965" x2="730" y2="965" class="blocked"/>
+  <text x="745" y="969" class="label-iface">Blocked by firewall</text>
+
+  <!-- Column 4: Boundaries -->
+  <text x="690" y="989" class="label-comp" font-size="12">Boundaries</text>
+  <rect x="690" y="996" width="40" height="12" fill="none" stroke="#666" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="745" y="1006" class="label-iface">Network zone (logical)</text>
+</svg>
