@@ -9,8 +9,8 @@
 # re-included: git cannot re-include a file whose parent directory is excluded
 9_Financial Management in Digital Products/*
 !9_Financial Management in Digital Products/README.md
-10_IT Team Management/*
-!10_IT Team Management/README.md
+10_IT Team Management/
+
 
 *.mp4
 *.zip
