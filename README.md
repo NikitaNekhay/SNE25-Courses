@@ -4,7 +4,7 @@ Open-sourced Labs and Reports from my masters degree in Networking, Security and
 
 Here I want to thank our friend Ahmed N. for inspiration to create such a repository.
 
-🇷🇺 [Читать на русском](README.ru.md)
+[Читать на русском](README.ru.md)
 
 ---
 
