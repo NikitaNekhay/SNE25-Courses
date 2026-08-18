@@ -65,29 +65,114 @@ Every course folder has its own README with a lab-by-lab table. All reports are 
 
 ---
 
-## Tools used
+## Tools, technologies and techniques
 
+Everything below appears in the labs and projects of this repository. Grouped by
+the domains of the speciality rather than by course, since most of them recur
+across several courses.
+
+### Networking and routing
+
+| | |
+|---|---|
+| **Protocols** | IPv4 · IPv6 · TCP · UDP · ICMP · ARP · OSPF (multi-area) · BGP / eBGP · STP · VLAN (802.1Q) · LACP · DHCP · DNS · NAT / masquerading · QoS · SNMP |
+| **Platforms** | GNS3 · MikroTik RouterOS / CHR · Cisco 7200 · Cisco IOSvL2 · pfSense |
+| **Analysis** | Wireshark · tshark · tcpdump · nmap · ncat · netcat · socat · powercat · curl · Netplan · iproute2 |
+| **Techniques** | Subnetting and addressing plans · L2 bridging · link redundancy and fault tolerance · spanning-tree convergence · route redistribution and static routes · traffic shaping and prioritisation · packet capture and artifact extraction |
+
+### Virtualization, containers and orchestration
+
+| | |
+|---|---|
+| **Hypervisors** | QEMU/KVM (Linux KVM) · libvirt · virt-manager · VirtualBox · VMware · Hyper-V · Citrix Hypervisor · XenServer |
+| **Containers** | Docker Engine · Dockerfile · Docker Compose · Docker Hub · Docker Swarm · containerd |
+| **Orchestration** | Kubernetes · minikube · k3s · Helm · pods, deployments, services and manifests |
+| **Techniques** | Multi-container environments · bind mounts and volumes · image tagging by commit SHA · L7 load balancing with weighted round-robin · isolated and segmented lab networks |
+
+### Unix internet services
+
+| | |
+|---|---|
+| **Boot and naming** | PXE · TFTP · dnsmasq · BIND9 · forward and reverse zones · primary / secondary / delegated name servers |
+| **Mail** | Postfix (MTA) · Dovecot (IMAP) · SMTP · IMAP · POP3 · SASL · STARTTLS · virtual mailboxes · SpamAssassin · SPF · DKIM · DMARC |
+| **Web** | nginx · Apache · HAProxy · virtual hosts · building a webserver from source · GeoIP · Let's Encrypt · certbot |
+| **Techniques** | Network installation of an OS · MBR and GPT partitioning · zone delegation · mail authentication alignment verified against external providers · spam classification |
+
+### Cryptography, PKI and VPN
+
+| | |
+|---|---|
+| **Tools** | OpenSSL · easy-rsa · OpenVPN · WireGuard · IPsec · sslyze · testssl.sh · mitmproxy |
+| **Standards** | RSA · X.509 · TLS 1.2 / 1.3 · HTTPS · HSTS · UEFI Secure Boot (PK / KEK / db / dbx) |
+| **Techniques** | Key generation, encryption, decryption and signature verification · certificate authority and client certificate issuance · certificate pinning · MITM demonstration in an isolated lab · secure boot chain and kernel signing · classical ciphers (Vigenère, Nihilist) and cryptanalysis |
+
+### CI/CD, infrastructure as code and automation
+
+| | |
+|---|---|
+| **Pipelines** | GitLab CE (self-hosted) · GitLab Runner · GitLab CI · GitHub Actions · Jenkins · Git · GitOps |
+| **Configuration management** | Ansible · Ansible AWX · Terraform · Puppet · Chef · SaltStack |
+| **Techniques** | Multi-stage pipelines with enforced security gates · runner registration and shell executors · masked CI variables and secret managers · artifact publishing · automated deployment to remote hosts · LLM-assisted code review, failure triage and merge-request generation (OpenRouter / OpenAI) |
+
+### Application and code security
+
+| | |
+|---|---|
+| **SAST / SCA / secrets** | Semgrep · Trivy · Gitleaks · SonarQube · Snyk · Deepsource · Bandit · cppcheck |
+| **Dynamic analysis** | AFL++ · afl-fuzz · Valgrind · AddressSanitizer · Burp Suite · sqlmap · dirb |
+| **Frameworks** | CWE Top 25 · OWASP Top 10 · CVE · CVSS |
+| **Techniques** | Vulnerability classification and remediation · crash triage from fuzzing corpora · compiler hardening (`-fstack-protector-strong`, `_FORTIFY_SOURCE`, `-Wformat=2`) · dependency upgrade and lockfile regeneration · release blocking on policy violation |
+
+### Monitoring, SIEM and threat detection
+
+| | |
+|---|---|
+| **Platforms** | Wazuh (manager / indexer / dashboard) · OpenSearch · Kibana · Filebeat · Grafana · Prometheus · Zabbix · Splunk |
+| **Detection** | Snort · Suricata · YARA · osquery · Sigma · MITRE ATT&CK |
+| **Techniques** | Agent enrolment on Linux and Windows · custom detection rules and decoders · log rotation · alert correlation and behaviour classification · dashboard-driven investigation |
+
+### Offensive security
+
+| | |
+|---|---|
+| **Reverse engineering** | GDB · Ghidra · radare2 · IDA · objdump · readelf · strace · ltrace · Immunity Debugger |
+| **Exploitation** | Metasploit Framework · Hydra · Hashcat · Nessus · smbclient |
+| **Concepts** | ASLR · NX · stack canaries · PIE · GOT and PLT · ROP · shellcode · NOP sleds |
+| **Techniques** | Stripped-binary analysis · breakpoint mechanics · local stack buffer overflow to root shell · pivoting through a compromised host · privilege escalation · full engagement against a target machine |
+
+### Digital forensics and malware analysis
+
+| | |
+|---|---|
+| **Acquisition** | CAINE · dcfldd · dd · Guymager · Disk Image Mounter |
+| **Analysis** | Autopsy · The Sleuth Kit · PhotoRec · foremost · binwalk · Volatility · log2timeline / plaso · mactime · RegRipper |
+| **Sandboxing** | CAPEv2 · Cuckoo · PE analysis |
+| **Techniques** | Forensically sound imaging · MD5 / SHA-256 pre- and post-acquisition hashing · write blocking and evidence integrity · file system and platform identification · timeline creation · Windows artefact analysis · static and dynamic malware analysis · reporting and chain of custody |
+
+### Hardening and access control
+
+| | |
+|---|---|
+| **Mandatory access control** | AppArmor · SELinux · profiles and policy modes |
+| **Host hardening** | auditd · fail2ban · ufw · iptables · nftables · GRUB kernel parameters · CIS Benchmarks |
+| **System administration** | systemd units · crontab · journalctl · sudo policy · SSH key authentication and hardening |
+| **Identity** | Kerberos · LDAP · Samba Active Directory DC · SSSD |
+
+### Deception and honeypots
+
+Cowrie (SSH / Telnet) · Mosquitto MQTT broker · decoy service stubs · fake device fingerprints · intentional weak credentials · attacker engagement logging
+
+### Languages, formats and data stores
+
+| | |
+|---|---|
+| **Languages** | C · Python · Bash · PowerShell · JavaScript / Node.js · PHP · SQL |
+| **Formats** | YAML · JSON · Makefile |
+| **Data stores** | MySQL · MariaDB · PostgreSQL · MongoDB · Redis · SQLite · CassandraDB |
+| **Distributed storage** | GlusterFS · HDFS · CephFS · Hadoop · DRBD |
+
+Reference for the official programme tool list:
 <https://apply.innopolis.university/masters/securityandnetworkengineering/>
-
-**Network and systems administration**
-
-UEFI · Grub · GNS3 · Wireshark · dd · strace · openssl · curl · Mikrotik · Pfsense · VMware · VirtualBox · Hyper-V · Linux KVM · Citrix Hypervisor · XenServer · GlusterFS · HDFS · CephFS · Hadoop · DRBD
-
-**Automation and administration of software development processes**
-
-Jenkins · Gitlab CI · Github Actions · Ansible · Puppet · Chef · Docker · Docker Swarm · Kubernetes · CassandraDB · MongoDB · Mysql · SonarQube · Grafana · Kibana · Zabbix
-
-**Security assessment and penetration testing**
-
-Metasploit framework · SonarQube · Nessus · Nmap · Ghidra · Radare2 · Immunity Debugger
-
-**Collection and analysis of digital evidence for computer incident investigation**
-
-Disk Image Mounter · Autopsy · Sleuth Kit · PhotoRec · log2timeline · mactime
-
-**Information security threat monitoring**
-
-Cuckoo · Snort · Wazuh
 
 ---
 

@@ -66,29 +66,114 @@ __Язык обучения — английский.__
 
 ---
 
-## Используемые инструменты и техники
+## Инструменты, технологии и техники
 
+Всё перечисленное встречается в лабораторных и проектах этого репозитория.
+Сгруппировано по доменам специальности, а не по дисциплинам, потому что
+большинство пунктов повторяется в нескольких курсах.
+
+### Сети и маршрутизация
+
+| | |
+|---|---|
+| **Протоколы** | IPv4 · IPv6 · TCP · UDP · ICMP · ARP · OSPF (многозональный) · BGP / eBGP · STP · VLAN (802.1Q) · LACP · DHCP · DNS · NAT / маскарадинг · QoS · SNMP |
+| **Платформы** | GNS3 · MikroTik RouterOS / CHR · Cisco 7200 · Cisco IOSvL2 · pfSense |
+| **Анализ** | Wireshark · tshark · tcpdump · nmap · ncat · netcat · socat · powercat · curl · Netplan · iproute2 |
+| **Техники** | Планирование адресации и подсетей · L2-бриджинг · резервирование каналов и отказоустойчивость · сходимость связующего дерева · перераспределение маршрутов и статическая маршрутизация · шейпинг и приоритизация трафика · перехват трафика и извлечение артефактов |
+
+### Виртуализация, контейнеры и оркестрация
+
+| | |
+|---|---|
+| **Гипервизоры** | QEMU/KVM (Linux KVM) · libvirt · virt-manager · VirtualBox · VMware · Hyper-V · Citrix Hypervisor · XenServer |
+| **Контейнеры** | Docker Engine · Dockerfile · Docker Compose · Docker Hub · Docker Swarm · containerd |
+| **Оркестрация** | Kubernetes · minikube · k3s · Helm · поды, деплойменты, сервисы и манифесты |
+| **Техники** | Мультиконтейнерные окружения · bind-монтирование и тома · тегирование образов по commit SHA · L7-балансировка со взвешенным round-robin · изолированные и сегментированные стенды |
+
+### Интернет-сервисы на Unix
+
+| | |
+|---|---|
+| **Загрузка и имена** | PXE · TFTP · dnsmasq · BIND9 · прямые и обратные зоны · первичный / вторичный / делегированный DNS |
+| **Почта** | Postfix (MTA) · Dovecot (IMAP) · SMTP · IMAP · POP3 · SASL · STARTTLS · виртуальные почтовые ящики · SpamAssassin · SPF · DKIM · DMARC |
+| **Веб** | nginx · Apache · HAProxy · виртуальные хосты · сборка веб-сервера из исходников · GeoIP · Let's Encrypt · certbot |
+| **Техники** | Сетевая установка ОС · разметка MBR и GPT · делегирование зон · проверка выравнивания почтовой аутентификации на внешних провайдерах · классификация спама |
+
+### Криптография, PKI и VPN
+
+| | |
+|---|---|
+| **Инструменты** | OpenSSL · easy-rsa · OpenVPN · WireGuard · IPsec · sslyze · testssl.sh · mitmproxy |
+| **Стандарты** | RSA · X.509 · TLS 1.2 / 1.3 · HTTPS · HSTS · UEFI Secure Boot (PK / KEK / db / dbx) |
+| **Техники** | Генерация ключей, шифрование, расшифрование и проверка подписи · развёртывание CA и выпуск клиентских сертификатов · пиннинг сертификатов · демонстрация MITM на изолированном стенде · цепочка доверенной загрузки и подпись ядра · классические шифры (Виженер, Нигилист) и криптоанализ |
+
+### CI/CD, инфраструктура как код и автоматизация
+
+| | |
+|---|---|
+| **Пайплайны** | GitLab CE · GitLab Runner · GitLab CI · GitHub Actions · Jenkins · Git · GitOps |
+| **Управление конфигурацией** | Ansible · Ansible AWX · Terraform · Puppet · Chef · SaltStack |
+| **Техники** | Многостадийные пайплайны с обязательными security-гейтами · регистрация раннеров и shell-executor · маскированные CI-переменные и хранилища секретов · публикация артефактов · автоматический деплой на удалённые хосты · ревью кода, разбор падений и генерация merge request с помощью LLM (OpenRouter / OpenAI) |
+
+### Безопасность приложений и кода
+
+| | |
+|---|---|
+| **SAST / SCA / секреты** | Semgrep · Trivy · Gitleaks · SonarQube · Snyk · Deepsource · Bandit · cppcheck |
+| **Динамический анализ** | AFL++ · afl-fuzz · Valgrind · AddressSanitizer · Burp Suite · sqlmap · dirb |
+| **Методологии** | CWE Top 25 · OWASP Top 10 · CVE · CVSS |
+| **Техники** | Классификация и устранение уязвимостей · разбор падений из корпуса фаззера · защитные флаги компилятора (`-fstack-protector-strong`, `_FORTIFY_SOURCE`, `-Wformat=2`) · обновление зависимостей и пересборка lock-файла · блокировка релиза при нарушении политики |
+
+### Мониторинг, SIEM и обнаружение угроз
+
+| | |
+|---|---|
+| **Платформы** | Wazuh (manager / indexer / dashboard) · OpenSearch · Kibana · Filebeat · Grafana · Prometheus · Zabbix · Splunk |
+| **Обнаружение** | Snort · Suricata · YARA · osquery · Sigma · MITRE ATT&CK |
+| **Техники** | Подключение агентов на Linux и Windows · собственные правила и декодеры · ротация логов · корреляция алертов и классификация поведения · расследование через дашборд |
+
+### Наступательная безопасность
+
+| | |
+|---|---|
+| **Обратная разработка** | GDB · Ghidra · radare2 · IDA · objdump · readelf · strace · ltrace · Immunity Debugger |
+| **Эксплуатация** | Metasploit Framework · Hydra · Hashcat · Nessus · smbclient |
+| **Концепции** | ASLR · NX · стековые канарейки · PIE · GOT и PLT · ROP · шелл-код · NOP-цепочки |
+| **Техники** | Анализ бинарей без символов · механика точек останова · переполнение буфера на стеке до root-шелла · продвижение через скомпрометированный хост · повышение привилегий · полный цикл атаки на целевую машину |
+
+### Криминалистика и анализ вредоносного ПО
+
+| | |
+|---|---|
+| **Сбор данных** | CAINE · dcfldd · dd · Guymager · Disk Image Mounter |
+| **Анализ** | Autopsy · The Sleuth Kit · PhotoRec · foremost · binwalk · Volatility · log2timeline / plaso · mactime · RegRipper |
+| **Песочницы** | CAPEv2 · Cuckoo · анализ PE |
+| **Техники** | Криминалистически корректное снятие образа · хеширование MD5 / SHA-256 до и после · блокировка записи и целостность доказательств · определение платформы и файловой системы · построение таймлайна · анализ артефактов Windows · статический и динамический анализ вредоносного ПО · отчётность и цепочка сохранности |
+
+### Харденинг и контроль доступа
+
+| | |
+|---|---|
+| **Мандатный доступ** | AppArmor · SELinux · профили и режимы политик |
+| **Защита хоста** | auditd · fail2ban · ufw · iptables · nftables · параметры ядра через GRUB · CIS Benchmarks |
+| **Системное администрирование** | юниты systemd · crontab · journalctl · политика sudo · аутентификация по SSH-ключам и харденинг SSH |
+| **Идентификация** | Kerberos · LDAP · Samba Active Directory DC · SSSD |
+
+### Обман и ловушки
+
+Cowrie (SSH / Telnet) · MQTT-брокер Mosquitto · заглушки ложных сервисов · поддельные отпечатки устройств · намеренно слабые учётные данные · логирование действий атакующего
+
+### Языки, форматы и хранилища
+
+| | |
+|---|---|
+| **Языки** | C · Python · Bash · PowerShell · JavaScript / Node.js · PHP · SQL |
+| **Форматы** | YAML · JSON · Makefile |
+| **Базы данных** | MySQL · MariaDB · PostgreSQL · MongoDB · Redis · SQLite · CassandraDB |
+| **Распределённое хранение** | GlusterFS · HDFS · CephFS · Hadoop · DRBD |
+
+Официальный список инструментов программы:
 <https://apply.innopolis.university/masters/securityandnetworkengineering/>
-
-**Администрирование сетей и систем**
-
-UEFI · Grub · GNS3 · Wireshark · dd · strace · openssl · curl · Mikrotik · Pfsense · VMware · VirtualBox · Hyper-V · Linux KVM · Citrix Hypervisor · XenServer · GlusterFS · HDFS · CephFS · Hadoop · DRBD
-
-**Автоматизация и администрирование процессов разработки ПО**
-
-Jenkins · Gitlab CI · Github Actions · Ansible · Puppet · Chef · Docker · Docker Swarm · Kubernetes · CassandraDB · MongoDB · Mysql · SonarQube · Grafana · Kibana · Zabbix
-
-**Анализ защищенности и тестирование на проникновение**
-
-Metasploit framework · SonarQube · Nessus · Nmap · Ghidra · Radare2 · Immunity Debugger
-
-**Сбор и анализ цифровых доказательств расследования компьютерных инцидентов**
-
-Disk Image Mounter · Autopsy · Sleuth Kit · PhotoRec · log2timeline · mactime
-
-**Мониторинг угроз ИБ**
-
-Сuckoo · Snort · Wazuh
 
 ---
 
