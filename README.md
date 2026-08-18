@@ -35,6 +35,7 @@ Every course folder has its own README with a lab-by-lab table. All reports are 
 | 7 | [Computer Forensics and Incident Response](./7_Computer%20Forensics%20and%20Incident%20Response/README.md) | labs on data acquisition, file system forensics, sandboxing and malware analysis, and SIEM deployment. Project work on secure DevOps in cyber forensics. |
 | 8 | [Offensive Technologies](./8_Offensive%20Technologies/README.md) | labs on binary disassembly/exploitation, software vulnerabilities and malware analysis. Project work on an IoT deception honeypot network. |
 | 9 | [Financial Management in Digital Products](./9_Financial%20Management%20in%20Digital%20Products/README.md) | unit economics, financial statements, financial ratios and a digital habits case. |
+| 10 | [Industrial Project — Flexible Platform](./10_Industrial%20Project/README.md) | team-built cyber-range scenario constructor for client Innostage: visual multi-stage attack-chain editor on Sliver C2 + MITRE ATT&CK Atomic Red Team. My role — frontend and team lead. |
 
 ---
 
